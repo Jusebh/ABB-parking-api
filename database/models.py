@@ -34,6 +34,16 @@ class Reservations(Base):
 
     users: Mapped["Users"] = relationship(back_populates = "reservations")
     statuses: Mapped["Statuses"] = relationship(back_populates = "reservations")
+    reservations_dates: Mapped[List["ReservationsDates"]] = relationship(back_populates = "reservations")
+
+class ReservationsDates(Base):
+    __tablename__ = "reservations_dates"
+
+    id: Mapped[int] = mapped_column(primary_key = True)
+    reservation_id: Mapped[int] = mapped_column(ForeignKey("reservations.id"))
+    date_of_reservation: Mapped[datetime]
+
+    reservations: Mapped["Reservations"] = relationship(back_populates = "reservations_dates")
 
 class Statuses(Base):
     __tablename__ = "statuses"
