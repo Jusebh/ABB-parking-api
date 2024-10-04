@@ -14,7 +14,7 @@ class Users(Base):
     priority_group_id: Mapped[int] = mapped_column(ForeignKey("priority_groups.id"))
 
     priority_groups: Mapped["PriorityGroups"] = relationship(back_populates = "users")
-    reservations: Mapped[List["Reservations"]] = relationship(back_populates = "users")
+    reservations: Mapped[List["Reservations"]] = relationship(back_populates = "users", cascade = "all, delete-orphan")
 
 class PriorityGroups(Base):
     __tablename__ = "priority_groups"
@@ -34,7 +34,7 @@ class Reservations(Base):
 
     users: Mapped["Users"] = relationship(back_populates = "reservations")
     statuses: Mapped["Statuses"] = relationship(back_populates = "reservations")
-    reservations_dates: Mapped[List["ReservationsDates"]] = relationship(back_populates = "reservations")
+    reservations_dates: Mapped[List["ReservationsDates"]] = relationship(back_populates = "reservations", cascade = "all, delete-orphan")
 
 class ReservationsDates(Base):
     __tablename__ = "reservations_dates"
