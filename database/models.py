@@ -1,3 +1,5 @@
+from datetime import datetime
+from typing import List
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -12,6 +14,7 @@ class Users(Base):
     priority_group_id: Mapped[int] = mapped_column(ForeignKey("priority_groups.id"))
 
     priority_groups: Mapped["PriorityGroups"] = relationship(back_populates = "users")
+    reservations: Mapped[List["Reservations"]] = relationship(back_populates = "users")
 
 class PriorityGroups(Base):
     __tablename__ = "priority_groups"
@@ -19,10 +22,23 @@ class PriorityGroups(Base):
     id: Mapped[int] = mapped_column(primary_key = True)
     priority: Mapped[int]
 
-    users: Mapped["Users"] = relationship(back_populates = "priority_groups")
+    users: Mapped[List["Users"]] = relationship(back_populates = "priority_groups")
+
+class Reservations(Base):
+    __tablename__ = "reservations"
+
+    id: Mapped[int] = mapped_column(primary_key = True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    status_id: Mapped[int] = mapped_column(ForeignKey("statuses.id"))
+    created_at: Mapped[datetime]
+
+    users: Mapped["Users"] = relationship(back_populates = "reservations")
+    statuses: Mapped["Statuses"] = relationship(back_populates = "reservations")
 
 class Statuses(Base):
     __tablename__ = "statuses"
 
     id: Mapped[int] = mapped_column(primary_key = True)
     title: Mapped[str] = mapped_column(String(30))
+
+    reservations: Mapped[List["Reservations"]] = relationship(back_populates = "statuses")
