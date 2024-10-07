@@ -1,5 +1,5 @@
-import database.operations.connecting as conn
-from sqlalchemy import delete
+from database.operations.connecting import connect_to_database
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 def remove_record(table: str, id):
@@ -16,7 +16,11 @@ def remove_record(table: str, id):
         from database.models import Statuses as model
     else:
         return False
-    with Session(conn) as session:
-        delete(table).where(model.id == id)
-        session.commit()
-    return True
+    with Session(connect_to_database()) as session:
+        stmt = select(model).where(model.id == id)
+        result = session.scalars(stmt).one_or_none()
+        if result:
+            session.delete(result)
+            session.commit()
+            return True
+        return False
