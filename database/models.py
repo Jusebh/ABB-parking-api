@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from typing import List
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
@@ -41,7 +41,7 @@ class ReservationsDates(Base):
 
     id: Mapped[int] = mapped_column(primary_key = True)
     reservation_id: Mapped[int] = mapped_column(ForeignKey("reservations.id"))
-    date_of_reservation: Mapped[datetime]
+    date_of_reservation: Mapped[date]
 
     reservations: Mapped["Reservations"] = relationship(back_populates = "reservations_dates")
 

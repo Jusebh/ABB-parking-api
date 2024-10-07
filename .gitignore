@@ -140,7 +140,10 @@ test.py
 
 # Rope project settings
 .ropeproject
-
+pytania
+pytania.txt
+.pytania
+.pytania.txt
 # mkdocs documentation
 /site
 
