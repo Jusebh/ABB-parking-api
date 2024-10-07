@@ -129,10 +129,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-test
 test.py
-.test
-.test.py
 *.db
 
 # Spyder project settings
