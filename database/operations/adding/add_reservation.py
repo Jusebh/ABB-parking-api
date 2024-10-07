@@ -1,5 +1,5 @@
-from operations.connecting import connect_to_database
-from models import Reservations, Users, Statuses, ReservationsDates
+from database.operations.connecting import connect_to_database
+from database.models import Reservations, Users, Statuses, ReservationsDates
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from datetime import datetime
