@@ -32,7 +32,7 @@ def all_reservations():
         reservations_tab.append({"id": reservation.id, "user_id": reservation.user_id, "status_id": reservation.status_id, "created_at": reservation.created_at})
     return reservations_tab
 
-get_all_reservations_dates = Blueprint("get_all_reservations_dates")
+get_all_reservations_dates = Blueprint("get_all_reservations_dates", __name__)
 @get_all_reservations_dates.route("/admin/get/allReservationsDates")
 def all_reservations_dates():
     reservations_dates = select_all_reservations_dates()
