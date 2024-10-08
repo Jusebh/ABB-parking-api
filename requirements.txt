@@ -1,2 +1,4 @@
-flask 
+flask
+flask_session
+identity
 SQLAlchemy
