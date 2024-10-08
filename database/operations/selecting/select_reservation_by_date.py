@@ -1,16 +1,16 @@
 from sqlalchemy import select
-from models import Reservations, ReservationsDates
+from database.models import Reservations, ReservationsDates
 from sqlalchemy.orm import Session
-from operations.connecting import connect_to_database
+from database.operations.connecting import connect_to_database
 from datetime import datetime
 
-def select_reservation_by_date(user_id, date):
+def select_reservation_by_date(user_id, day, month):
     with Session(connect_to_database()) as session:
-        date += f"-{str(datetime.year)}"
+        date = f"{day}-{month}-{str(datetime.now().year)}"
         date = datetime.strptime(date, "%d-%m-%Y").date()
-        stmt = select(Reservations).join(Reservations.reservations_dates).where(Reservations.user_id == user_id).where(ReservationsDates.date_of_reservation == date)
+        stmt = select(ReservationsDates).join(ReservationsDates.reservations).where(Reservations.user_id == user_id).where(ReservationsDates.date_of_reservation == date)
         result = session.scalars(stmt).one_or_none()
         if result:
-            return {"status": result.statuses, "date": date}
+            return {"status": result.status_id, "date": date}
         else:
             return {"status": None, "date": None}
