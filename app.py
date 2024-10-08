@@ -3,6 +3,7 @@ from flask import Flask
 from flask_session import Session
 from database.operations.create_tables import create_tables
 from blueprints.admin.get import get_all_priority_groups, get_all_reservations, get_all_reservations_dates, get_all_statuses, get_all_users
+from blueprints.admin.post import receive_new_user_data, receive_new_reservation_data
 from blueprints.user.dates import current_month, table_of_days
 from blueprints.user.get import get_reservation_by_date
 from blueprints.user.oauth import get_login_link, get_logout_link, logout_success_msg, auth_response, find_user, get_user_data
@@ -18,6 +19,9 @@ app.register_blueprint(get_all_priority_groups)
 app.register_blueprint(get_all_reservations)
 app.register_blueprint(get_all_reservations_dates)
 app.register_blueprint(get_all_statuses)
+
+app.register_blueprint(receive_new_user_data)
+app.register_blueprint(receive_new_reservation_data)
 
 app.register_blueprint(current_month)
 app.register_blueprint(table_of_days)
