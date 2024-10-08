@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from database.operations.adding.add_user import add_user
 from database.operations.adding.add_reservation import add_reservation
+from database.operations.selecting.select_reservation_by_date import select_reservation_by_date
 from datetime import datetime
 
 receive_user_data = Blueprint("receive_user_data", __name__)
@@ -11,7 +12,7 @@ def user_data():
         data = request.get_json()
         try:
             add_user(data["email"])
-            return jsonify({"result" : "Succed"})
+            return jsonify({"result" : "Succeed"})
         except Exception as e:
             return jsonify({"result" : f"Error: {str(e)}"})
     else:
@@ -31,9 +32,15 @@ def reservation_data():
         for i in dates:
             if int(i) <= current_day and int(data["month"] == current_month):
                 if i == current_day and current_hour >= 16:
-                    result.append(f"Reservation on {i} can't be completed (it's too late).\n")
+                    result.append(f"Reservation on {i} can't be completed (it's too late).")
+                elif current_hour <= 15:
+                    try:
+                        add_reservation(data["id"], i, data["month"])
+                        result.append(f"Reservation on day {i} was made.")
+                    except Exception as e:
+                        result.append(f"Reservation on day {i} can't be made, because of {e} error.")
                 else:
-                    result.append(f"Reservation on past date can't be made.\n")
+                    result.append(f"Reservation on past date can't be made.")
             else:
                 try:
                     add_reservation(data["id"], i, data["month"])
@@ -42,4 +49,15 @@ def reservation_data():
                     result.append(f"Reservation on day {i} can't be made, because of {e} error.")
         return jsonify({"result": result})
     else:
-        return jsonify("Wrong content type")
+        return jsonify({"result": "Wrong content type"})
+    
+receive_reservation_date = Blueprint("receive_reservation_date", __name__)
+@receive_reservation_date.route("/user/post/receiveReservationDate", methods=['POST'])
+def reservation_date():
+    content_type = request.headers.get('Content-Type')
+    if (content_type == 'application/json'):
+        data = request.get_json()
+        result = select_reservation_by_date(data["id"], data["day"], data["month"])
+        return jsonify({"result": result})
+    else:
+        return jsonify({"result": "Wrong content type"})
