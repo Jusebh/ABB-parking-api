@@ -6,7 +6,7 @@ from blueprints.admin.get import get_all_priority_groups, get_all_reservations, 
 from blueprints.user.dates import current_month, table_of_days
 from blueprints.user.get import get_reservation_by_date
 from blueprints.user.oauth import get_login_link, get_logout_link, logout_success_msg, auth_response, find_user, get_user_data
-from blueprints.user.post import receive_data_of_reservation
+from blueprints.user.post import receive_reservation_data, receive_user_data
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -31,7 +31,8 @@ app.register_blueprint(auth_response)
 app.register_blueprint(find_user)
 app.register_blueprint(get_user_data)
 
-app.register_blueprint(receive_data_of_reservation)
+app.register_blueprint(receive_reservation_data)
+app.register_blueprint(receive_user_data)
 
 if __name__ == '__main__':
    app.run(debug=True)
