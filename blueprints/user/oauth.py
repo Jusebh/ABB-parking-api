@@ -25,7 +25,12 @@ def logout():
     log_out = auth.log_out(url_for("logout_success", _external=True))
     return jsonify({ log_out['auth_uri'] })
 
-auth_response = Blueprint("auth_response", __name__)
+logout_success_msg = Blueprint("logout_success_msg", __name__, template_folder="templates")
+@logout_success_msg.route("/user/oauth/logoutSuccess")
+def logout_success():
+    return render_template("logout_success.html")
+
+auth_response = Blueprint("auth_response", __name__, template_folder="templates")
 @auth_response.route(app_config.REDIRECT_PATH)
 def response():
     result = auth.complete_log_in(request.args)
