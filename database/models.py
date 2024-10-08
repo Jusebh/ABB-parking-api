@@ -20,7 +20,7 @@ class PriorityGroups(Base):
     __tablename__ = "priority_groups"
 
     id: Mapped[int] = mapped_column(primary_key = True)
-    priority: Mapped[int]
+    priority: Mapped[int] = mapped_column(nullable=True)
 
     users: Mapped[List["Users"]] = relationship(back_populates = "priority_groups")
 

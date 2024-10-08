@@ -1,7 +1,7 @@
 from sqlalchemy import select
-from models import Reservations, ReservationsDates
+from database.models import Reservations, ReservationsDates
 from sqlalchemy.orm import Session
-from operations.connecting import connect_to_database
+from database.operations.connecting import connect_to_database
 from datetime import datetime
 
 def select_reservation_by_date(user_id, date):
