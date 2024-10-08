@@ -29,11 +29,9 @@ class Reservations(Base):
 
     id: Mapped[int] = mapped_column(primary_key = True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    status_id: Mapped[int] = mapped_column(ForeignKey("statuses.id"))
     created_at: Mapped[datetime]
 
     users: Mapped["Users"] = relationship(back_populates = "reservations")
-    statuses: Mapped["Statuses"] = relationship(back_populates = "reservations")
     reservations_dates: Mapped[List["ReservationsDates"]] = relationship(back_populates = "reservations", cascade = "all, delete-orphan")
 
 class ReservationsDates(Base):
@@ -42,7 +40,9 @@ class ReservationsDates(Base):
     id: Mapped[int] = mapped_column(primary_key = True)
     reservation_id: Mapped[int] = mapped_column(ForeignKey("reservations.id"))
     date_of_reservation: Mapped[date]
+    status_id = Mapped[int] = mapped_column(ForeignKey("statuses.id"))
 
+    statuses: Mapped["Statuses"] = relationship(back_populates = "reservations_dates")
     reservations: Mapped["Reservations"] = relationship(back_populates = "reservations_dates")
 
 class Statuses(Base):
@@ -51,4 +51,4 @@ class Statuses(Base):
     id: Mapped[int] = mapped_column(primary_key = True)
     title: Mapped[str] = mapped_column(String(30))
 
-    reservations: Mapped[List["Reservations"]] = relationship(back_populates = "statuses")
+    reservations_dates: Mapped[List["ReservationsDates"]] = relationship(back_populates = "statuses")
