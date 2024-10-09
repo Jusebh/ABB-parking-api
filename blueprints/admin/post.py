@@ -7,6 +7,11 @@ from database.operations.removing.remove_reservation import remove_reservation
 from database.operations.removing.remove_reservations_date import remove_reservations_date
 from database.operations.removing.remove_priority_group import remove_priority_group
 from database.operations.removing.remove_status import remove_status
+from database.operations.updating.update_priority_groups import update_priority_group
+from database.operations.updating.update_reservations import update_reservation
+from database.operations.updating.update_reservations_dates import update_reservations_date
+from database.operations.updating.update_statuses import update_status
+from database.operations.updating.update_users import update_user
 
 receive_new_user_data = Blueprint("receive_new_user_data", __name__)
 @receive_new_user_data.route("/admin/post/receiveNewUserData", methods=['POST'])
@@ -66,6 +71,31 @@ def remove_data():
                 remove_priority_group(data["id"])
             elif data["table"] == "statuses":
                 remove_status(data["id"])
+            else:
+                return jsonify({"result": "An error occured"})
+            return jsonify({"result": "Successfully added user"})
+        except:
+            return jsonify({"result": "Couldn't add user"})
+    else:
+        return jsonify({"result": "Wrong content type"})
+
+receive_update_data = Blueprint("receive_update_data", __name__)
+@receive_update_data.route("/admin/post/receiveUpdateData", methods=['POST'])
+def update_data():
+    content_type = request.headers.get('Content-Type')
+    if content_type == 'application/json':
+        data = request.get_json()
+        try:
+            if data["table"] == "users":
+                update_user(data["user_id"], data["user_email"])
+            elif data["table"] == "reservations":
+                update_reservation(data["reservation_id"], data["reservation_status_id"], data["reservation_created_at"], data["reservation_user_id"])
+            elif data["table"] == "reservations_dates":
+                update_reservations_date(data["reservation_date_id"], data["reservation_date_reservation_id"], data["reservation_date_date_of_reservation"])
+            elif data["table"] == "priority_groups":
+                update_priority_group(data["group_id"], data["priority_number"])
+            elif data["table"] == "statuses":
+                update_status(data["status_id"], data["status_title"])
             else:
                 return jsonify({"result": "An error occured"})
             return jsonify({"result": "Successfully added user"})
