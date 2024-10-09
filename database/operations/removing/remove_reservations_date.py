@@ -3,7 +3,7 @@ from database.models import ReservationsDates
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-def remove_record(id):
+def remove_reservations_date(id):
     with Session(connect_to_database()) as session:
         stmt = select(ReservationsDates).where(ReservationsDates.id == id)
         result = session.scalars(stmt).one_or_none()
