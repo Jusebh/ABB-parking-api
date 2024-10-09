@@ -3,7 +3,7 @@ from sqlalchemy import update
 from sqlalchemy.orm import Session
 from database.models import PriorityGroups
 
-def update_user(group_id, priority_number):
+def update_priority_group(group_id, priority_number):
     with Session(connect_to_database()) as session:
         stmt = update(PriorityGroups).where(PriorityGroups.id == group_id).values(priority = priority_number)
         try: 
