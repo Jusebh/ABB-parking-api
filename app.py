@@ -1,7 +1,9 @@
 import app_config
 from flask import Flask
 from flask_session import Session
+from flask_apscheduler import APScheduler
 from database.operations.create_tables import create_tables
+from communication.check_reservations import check_reservations
 from blueprints.admin.get import get_all_priority_groups, get_all_reservations, get_all_reservations_dates, get_all_statuses, get_all_users
 from blueprints.user.dates import current_month, table_of_days
 from blueprints.user.get import get_reservation_by_date
@@ -35,6 +37,16 @@ app.register_blueprint(receive_reservation_data)
 app.register_blueprint(receive_user_data)
 app.register_blueprint(receive_reservation_date)
 app.register_blueprint(receive_user_id)
+
+scheduler = APScheduler()
+
+@scheduler.task('interval', id=1, hours = 1)
+def check_user_reservations():
+   check_reservations()
+   
+scheduler.init_app(app)
+
+scheduler.start()
 
 if __name__ == '__main__':
    app.run(debug=True)
