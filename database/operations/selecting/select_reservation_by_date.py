@@ -1,4 +1,5 @@
 from sqlalchemy import select
+from flask import jsonify
 from database.models import Reservations, ReservationsDates
 from sqlalchemy.orm import Session
 from database.operations.connecting import connect_to_database
@@ -6,11 +7,14 @@ from datetime import datetime
 
 def select_reservation_by_date(user_id, day, month):
     with Session(connect_to_database()) as session:
-        date = f"{day}-{month}-{str(datetime.now().year)}"
-        date = datetime.strptime(date, "%d-%m-%Y").date()
-        stmt = select(ReservationsDates).join(ReservationsDates.reservations).where(Reservations.user_id == user_id).where(ReservationsDates.date_of_reservation == date)
-        result = session.scalars(stmt).one_or_none()
-        if result:
-            return {"status": result.status_id, "date": date}
-        else:
-            return {"status": None, "date": None}
+        try:
+            date = f"{day}-{month}-{str(datetime.now().year)}"
+            date = datetime.strptime(date, "%d-%m-%Y").date()
+            stmt = select(ReservationsDates).join(ReservationsDates.reservations).where(Reservations.user_id == user_id).where(ReservationsDates.date_of_reservation >= date)
+            result = session.scalars(stmt).all()
+            reservations_tab = []
+            for reservation in result:
+                reservations_tab.append({"day": reservation.date_of_reservation.day, "status": reservation.status_id})
+            return jsonify(reservations_tab)
+        except:
+            return jsonify(None)

@@ -10,7 +10,8 @@ def add_user(email, priority_group_id=1):
         priority_group = priority_group.id
         user = Users(
             email = email,
-            priority_group_id = priority_group
+            priority_group_id = priority_group,
+            notifications = True
         )
         session.add(user)
         session.commit()

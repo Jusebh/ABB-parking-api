@@ -2,3 +2,5 @@ flask
 flask_session
 identity
 SQLAlchemy
+azure-communication-email
+flask_apscheduler
