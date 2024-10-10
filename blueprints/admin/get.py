@@ -29,7 +29,7 @@ def all_reservations():
     reservations = select_all_reservations()
     reservations_tab = []
     for reservation in reservations:
-        reservations_tab.append({"id": reservation.id, "user_id": reservation.user_id, "status_id": reservation.status_id, "created_at": reservation.created_at})
+        reservations_tab.append({"id": reservation.id, "user_id": reservation.user_id, "created_at": reservation.created_at})
     return jsonify(reservations_tab)
 
 get_all_reservations_dates = Blueprint("get_all_reservations_dates", __name__)
@@ -38,7 +38,7 @@ def all_reservations_dates():
     reservations_dates = select_all_reservations_dates()
     reservations_dates_tab = []
     for reservations_date in reservations_dates:
-        reservations_dates_tab.append[{"id": reservations_date.id, "reservation_id": reservations_date.reservation_id, "date_of_reservation": reservations_date.date_of_reservation}]
+        reservations_dates_tab.append({"id": reservations_date.id, "reservation_id": reservations_date.reservation_id, "date_of_reservation": reservations_date.date_of_reservation, "status_id": reservations_date.status_id })
     return jsonify(reservations_dates_tab)
 
 get_all_statuses = Blueprint("get_all_statuses", __name__)

@@ -12,6 +12,7 @@ class Users(Base):
     id: Mapped[int] = mapped_column(primary_key = True)
     email: Mapped[str] = mapped_column(String(50))
     priority_group_id: Mapped[int] = mapped_column(ForeignKey("priority_groups.id"))
+    notifications: Mapped[bool]
 
     priority_groups: Mapped["PriorityGroups"] = relationship(back_populates = "users")
     reservations: Mapped[List["Reservations"]] = relationship(back_populates = "users", cascade = "all, delete-orphan")

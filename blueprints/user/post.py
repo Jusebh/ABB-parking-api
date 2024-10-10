@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify
 from database.operations.adding.add_user import add_user
 from database.operations.adding.add_reservation import add_reservation
 from database.operations.selecting.select_reservation_by_date import select_reservation_by_date
+from database.operations.selecting.select_user_email import select_user_email
+from database.operations.updating.update_notification_status import update_notification_status
 from datetime import datetime
 
 receive_user_data = Blueprint("receive_user_data", __name__)
@@ -59,5 +61,27 @@ def reservation_date():
         data = request.get_json()
         result = select_reservation_by_date(data["id"], data["day"], data["month"])
         return jsonify({"result": result})
+    else:
+        return jsonify({"result": "Wrong content type"})
+    
+receive_user_id = Blueprint("receive_user_id", __name__)
+@receive_user_id.route("/user/post/receiveUserId", methods=['POST'])
+def user_id():
+    content_type = request.headers.get('Content-Type')
+    if (content_type == 'application/json'):
+        data = request.get_json()
+        result =  select_user_email(data["id"])
+        return jsonify({"result": result})
+    else:
+        return jsonify({"result": "Wrong content type"})
+    
+change_notification_status = Blueprint("change_notification_status", __name__)
+@change_notification_status.route("/user/post/changeNotificationStatus", methods=['POST'])
+def notification_status():
+    content_type = request.headers.get('Content-Type')
+    if (content_type == 'application/json'):
+        data = request.get_json()
+        update_notification_status(data["id"], data["status"])
+        return jsonify({"result": "changed"})
     else:
         return jsonify({"result": "Wrong content type"})
