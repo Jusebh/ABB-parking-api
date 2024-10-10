@@ -11,7 +11,7 @@ def add_user(email, priority_group_id=1):
         user = Users(
             email = email,
             priority_group_id = priority_group,
-            notification = True
+            notifications = True
         )
         session.add(user)
         session.commit()
