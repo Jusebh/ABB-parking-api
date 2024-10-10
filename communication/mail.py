@@ -8,7 +8,7 @@ def mail(email_adress, date_of_reservation):
     message = {
         "content":{
             "subject": "Przypomnienie o rezerewacji parkingu",
-            "htmk": f"""  <div style="background-color: #f6f6f6">
+            "html": f"""  <div style="background-color: #f6f6f6">
     <h1 style="background-color: #d9d9d9; color: rgb(95, 90, 90)">Witaj!</h1>
     <p>
       Przypominamy o twojej rezerwacji na dzien <strong>{date_of_reservation}</strong>.
