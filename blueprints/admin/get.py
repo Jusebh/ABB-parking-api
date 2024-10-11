@@ -14,10 +14,7 @@ get_all_priority_groups = Blueprint("get_all_priority_groups", __name__)
 @get_all_priority_groups.route("/admin/get/allPriorityGroups")
 def all_priority_groups():
     priority_groups = select_all_priority_groups()
-    priority_groups_tab = []
-    for priority_group in priority_groups:
-        priority_groups_tab.append({"id": priority_group.id, "priority": priority_group.priority})
-    return jsonify(priority_groups_tab)
+    return jsonify({"result": priority_groups})
 
 get_all_reservations_dates = Blueprint("get_all_reservations_dates", __name__)
 @get_all_reservations_dates.route("/admin/get/allReservationsDates")
