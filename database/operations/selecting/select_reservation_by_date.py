@@ -15,6 +15,6 @@ def select_reservation_by_date(user_id, day, month):
             reservations_tab = []
             for reservation in result:
                 reservations_tab.append({"day": reservation.date_of_reservation.day, "status": reservation.status_id})
-            return jsonify(reservations_tab)
+            return reservations_tab
         except:
-            return jsonify(None)
+            return None

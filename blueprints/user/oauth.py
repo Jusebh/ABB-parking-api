@@ -22,8 +22,9 @@ def login():
 get_logout_link = Blueprint("get_logout_link", __name__)
 @get_logout_link.route("/user/oauth/getLogoutLink")
 def logout():
-    log_out = auth.log_out(url_for("logout_success", _external=True))
-    return jsonify({ log_out['auth_uri'] })
+    log_out_link = auth.log_out(url_for("logout_success_msg.logout_success", _external=True))
+    print(log_out_link)
+    return jsonify({ "link": log_out_link })
 
 logout_success_msg = Blueprint("logout_success_msg", __name__, template_folder="templates")
 @logout_success_msg.route("/user/oauth/logoutSuccess")

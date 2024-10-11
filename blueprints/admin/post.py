@@ -89,9 +89,9 @@ def update_data():
             if data["table"] == "users":
                 update_user(data["user_id"], data["user_email"])
             elif data["table"] == "reservations":
-                update_reservation(data["reservation_id"], data["reservation_status_id"], data["reservation_created_at"], data["reservation_user_id"])
+                update_reservation(data["reservation_id"], data["reservation_created_at"], data["reservation_user_id"])
             elif data["table"] == "reservations_dates":
-                update_reservations_date(data["reservation_date_id"], data["reservation_date_reservation_id"], data["reservation_date_date_of_reservation"])
+                update_reservations_date(data["reservation_date_id"], data["reservation_date_reservation_id"], data["reservation_date_status_id"], data["reservation_date_date_of_reservation"])
             elif data["table"] == "priority_groups":
                 update_priority_group(data["group_id"], data["priority_number"])
             elif data["table"] == "statuses":
