@@ -11,6 +11,8 @@ from blueprints.user.get import get_reservation_by_date
 from blueprints.user.oauth import get_login_link, get_logout_link, logout_success_msg, auth_response, find_user, get_user_data
 from blueprints.user.post import receive_reservation_data, receive_user_data, receive_reservation_date, receive_user_id, change_notification_status
 
+import config
+
 app = Flask(__name__)
 app.config.from_object(app_config)
 Session(app)
@@ -47,7 +49,7 @@ app.register_blueprint(change_notification_status)
 
 scheduler = APScheduler()
 
-@scheduler.task('interval', id=1, hours = 1)
+@scheduler.task('interval', id="1", hours = 1)
 def check_user_reservations():
    check_reservations()
    

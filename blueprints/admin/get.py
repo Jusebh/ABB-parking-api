@@ -36,10 +36,7 @@ get_all_reservations_dates = Blueprint("get_all_reservations_dates", __name__)
 @get_all_reservations_dates.route("/admin/get/allReservationsDates")
 def all_reservations_dates():
     reservations_dates = select_all_reservations_dates()
-    reservations_dates_tab = []
-    for reservations_date in reservations_dates:
-        reservations_dates_tab.append({"id": reservations_date.id, "reservation_id": reservations_date.reservation_id, "date_of_reservation": reservations_date.date_of_reservation, "status_id": reservations_date.status_id })
-    return jsonify(reservations_dates_tab)
+    return jsonify({"result": reservations_dates})
 
 get_all_statuses = Blueprint("get_all_statuses", __name__)
 @get_all_statuses.route("/admin/get/allStatuses")
