@@ -4,12 +4,12 @@ from flask_session import Session
 from flask_apscheduler import APScheduler
 from database.operations.create_tables import create_tables
 from communication.check_reservations import check_reservations
-from blueprints.admin.get import get_all_priority_groups, get_all_reservations, get_all_reservations_dates, get_all_statuses, get_all_users
+from blueprints.admin.get import get_all_priority_groups, get_all_reservations_dates, get_all_statuses, get_all_users
 from blueprints.admin.post import receive_new_user_data, receive_new_reservation_data, receive_remove_data, receive_update_data
-from blueprints.user.dates import current_month, table_of_days
-from blueprints.user.get import get_reservation_by_date
 from blueprints.user.oauth import get_login_link, get_logout_link, logout_success_msg, auth_response, find_user, get_user_data
 from blueprints.user.post import receive_reservation_data, receive_user_data, receive_reservation_date, receive_user_id, change_notification_status
+
+import config
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -19,7 +19,6 @@ create_tables()
 
 app.register_blueprint(get_all_users)
 app.register_blueprint(get_all_priority_groups)
-app.register_blueprint(get_all_reservations)
 app.register_blueprint(get_all_reservations_dates)
 app.register_blueprint(get_all_statuses)
 
@@ -27,10 +26,6 @@ app.register_blueprint(receive_new_user_data)
 app.register_blueprint(receive_new_reservation_data)
 app.register_blueprint(receive_remove_data)
 app.register_blueprint(receive_update_data)
-
-app.register_blueprint(current_month)
-app.register_blueprint(table_of_days)
-app.register_blueprint(get_reservation_by_date)
 
 app.register_blueprint(get_login_link)
 app.register_blueprint(get_logout_link)
@@ -47,7 +42,7 @@ app.register_blueprint(change_notification_status)
 
 scheduler = APScheduler()
 
-@scheduler.task('interval', id=1, hours = 1)
+@scheduler.task('interval', id="1", hours = 1)
 def check_user_reservations():
    check_reservations()
    

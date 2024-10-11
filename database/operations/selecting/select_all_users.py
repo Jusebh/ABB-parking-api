@@ -6,4 +6,8 @@ from sqlalchemy.orm import Session
 def select_all_users():
     with Session(connect_to_database()) as session:
         stmt = select(Users)
-        return session.scalars(stmt).all()
+        result = session.scalars(stmt).all()
+        users_tab = []
+        for user in result:
+            users_tab.append({"id": user.id, "email": user.email, "priority_group": user.priority_groups.priority})
+        return users_tab
