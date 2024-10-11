@@ -26,7 +26,4 @@ get_all_statuses = Blueprint("get_all_statuses", __name__)
 @get_all_statuses.route("/admin/get/allStatuses")
 def all_statuses():
     statuses = select_all_statuses()
-    statuses_tab = []
-    for status in statuses:
-        statuses_tab.append({"id": status.id, "title": status.title})
-    return jsonify(statuses_tab)
+    return jsonify({"result": statuses})

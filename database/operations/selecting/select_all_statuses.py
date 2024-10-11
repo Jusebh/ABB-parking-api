@@ -6,4 +6,8 @@ from sqlalchemy.orm import Session
 def select_all_statuses():
     with Session(connect_to_database()) as session:
         stmt = select(Statuses)
-        return session.scalars(stmt).all()
+        result = session.scalars(stmt).all()
+        statuses_tab = []
+        for stasus in result:
+            statuses_tab.append({"id": stasus.id, "title": stasus.title})
+        return statuses_tab

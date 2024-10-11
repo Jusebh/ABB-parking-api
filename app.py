@@ -4,7 +4,7 @@ from flask_session import Session
 from flask_apscheduler import APScheduler
 from database.operations.create_tables import create_tables
 from communication.check_reservations import check_reservations
-from blueprints.admin.get import get_all_priority_groups, get_all_reservations, get_all_reservations_dates, get_all_statuses, get_all_users
+from blueprints.admin.get import get_all_priority_groups, get_all_reservations_dates, get_all_statuses, get_all_users
 from blueprints.admin.post import receive_new_user_data, receive_new_reservation_data, receive_remove_data, receive_update_data
 from blueprints.user.dates import current_month, table_of_days
 from blueprints.user.get import get_reservation_by_date
@@ -21,7 +21,6 @@ create_tables()
 
 app.register_blueprint(get_all_users)
 app.register_blueprint(get_all_priority_groups)
-app.register_blueprint(get_all_reservations)
 app.register_blueprint(get_all_reservations_dates)
 app.register_blueprint(get_all_statuses)
 
