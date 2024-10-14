@@ -30,7 +30,9 @@ def add_reservation(user_id, day, month, dates: list, priority):
         reservation_id = reservation.id
         
         for i in dates:
-            if int(i) <= current_day or current_month < int(month):
+            if int(i) > last_day:
+                continue
+            elif int(i) <= current_day or current_month < int(month):
                 result.append(f"Rezerwacja na dzień {i} nie powiodła się z powodu wybrania przeszłej daty.")
             elif int(i) == (current_day + 1) and current_month == int(month):
                 if hour >= 16:
@@ -50,7 +52,7 @@ def add_reservation(user_id, day, month, dates: list, priority):
                     )
                     session.add(reservation_date)
                     session.commit()
-                    result.append(f"Rezerwacja na dzień {i} powiodła się, i jej aktualny status to \"{status.id}\".")
+                    result.append(f"Rezerwacja na dzień {i} powiodła się, i jej aktualny status to \"{status.title}\".")
             elif int(i) > current_day and current_month == int(month):
                 date = f"{i}-{month}-{current_year}"
                 date = datetime.strptime(date, "%d-%m-%Y").date()
@@ -66,7 +68,7 @@ def add_reservation(user_id, day, month, dates: list, priority):
                 )
                 session.add(reservation_date)
                 session.commit()
-                result.append(f"Rezerwacja na dzień {i} powiodła się, i jej aktualny status to \"{status.id}\".")
+                result.append(f"Rezerwacja na dzień {i} powiodła się, i jej aktualny status to \"{status.title}\".")
             else:
                 result.append(f"Przy rezerwacji na dzień {i},  coś poszło nie tak.")
     return result

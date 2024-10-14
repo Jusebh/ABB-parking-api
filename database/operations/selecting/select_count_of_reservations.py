@@ -9,4 +9,7 @@ def select_count_of_reservations(day: str, month: str):
     date = datetime.strptime(date, "%d-%m-%Y").date()
     with Session(connect_to_database()) as session:
         stmt = select(ReservationsDates).join(ReservationsDates.statuses).where(ReservationsDates.date_of_reservation == date).where(Statuses.title != "Odrzucony")
-        return session.scalars(stmt).all().count()
+        try:
+            return session.scalars(stmt).all().count()
+        except:
+            return 0
