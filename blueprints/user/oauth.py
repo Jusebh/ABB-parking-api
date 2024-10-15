@@ -1,6 +1,6 @@
 import identity.web, requests
-import app_config
 from flask import Blueprint, jsonify, render_template, request, session, url_for
+import app_config
 
 auth = identity.web.Auth(
     session = session,

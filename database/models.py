@@ -13,6 +13,7 @@ class Users(Base):
     email: Mapped[str] = mapped_column(String(50))
     priority_group_id: Mapped[int] = mapped_column(ForeignKey("priority_groups.id"))
     notifications: Mapped[bool]
+    role: Mapped[str] = mapped_column(String(30), default="user")
 
     priority_groups: Mapped["PriorityGroups"] = relationship(back_populates = "users")
     reservations: Mapped[List["Reservations"]] = relationship(back_populates = "users", cascade = "all, delete-orphan")
@@ -21,6 +22,7 @@ class PriorityGroups(Base):
     __tablename__ = "priority_groups"
 
     id: Mapped[int] = mapped_column(primary_key = True)
+    title: Mapped[str] = mapped_column(String(30))
     priority: Mapped[int] = mapped_column(nullable=True)
 
     users: Mapped[List["Users"]] = relationship(back_populates = "priority_groups")
@@ -53,3 +55,10 @@ class Statuses(Base):
     title: Mapped[str] = mapped_column(String(30))
 
     reservations_dates: Mapped[List["ReservationsDates"]] = relationship(back_populates = "statuses")
+    
+class Config(Base):
+    __tablename__ = "config"
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    value: Mapped[str]

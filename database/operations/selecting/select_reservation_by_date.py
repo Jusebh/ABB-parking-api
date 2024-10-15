@@ -1,9 +1,8 @@
-from sqlalchemy import select
-from flask import jsonify
-from database.models import Reservations, ReservationsDates
-from sqlalchemy.orm import Session
-from database.operations.connecting import connect_to_database
 from datetime import datetime
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+from database.models import Reservations, ReservationsDates
+from database.operations.connecting import connect_to_database
 
 def select_reservation_by_date(user_id, day, month):
     with Session(connect_to_database()) as session:

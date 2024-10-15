@@ -1,6 +1,6 @@
+azure-communication-email
 flask
+flask_apscheduler
 flask_session
 identity
 SQLAlchemy
-azure-communication-email
-flask_apscheduler
