@@ -28,7 +28,7 @@ def check_reservation_possibility(day: str, month: str, user_id, dates: list):
                 number_of_reservations = select_count_of_reservations(i, month)
                 if number_of_reservations == 25:
                     reservation_to_replace = select_reservation_by_priority(i, month, priority)
-                    update_reservation_status(reservation_to_replace, "Odrzucony")
+                    update_reservation_status(reservation_to_replace, "Rejected")
         result += add_reservation(int(user_id), day, month, dates, priority)
     elif priority == 2:
         new_dates = dates.copy()
@@ -38,7 +38,7 @@ def check_reservation_possibility(day: str, month: str, user_id, dates: list):
                 if number_of_reservations == 25:
                     reservation_to_replace = select_reservation_by_priority(i, month, priority)
                     if reservation_to_replace:
-                        update_reservation_status(reservation_to_replace, "Odrzucony")
+                        update_reservation_status(reservation_to_replace, "Rejected")
                     else:
                         new_dates.remove(i)
         result += add_reservation(int(user_id), day, month, new_dates, priority)
