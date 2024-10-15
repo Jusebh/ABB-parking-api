@@ -60,6 +60,5 @@ class Config(Base):
     __tablename__ = "config"
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    parking_spots_number: Mapped[int]
-    max_reservation_hour: Mapped[int]
-    next_month_opening_hour: Mapped[int]
+    name: Mapped[str]
+    value: Mapped[str]
