@@ -62,15 +62,15 @@ def remove_data():
         data = request.get_json()
         try:
             if data["table"] == "users":
-                remove_user(data["id"])
+                remove_user(int(data["id"]))
             elif data["table"] == "reservations":
-                remove_reservation(data["id"])
+                remove_reservation(int(data["id"]))
             elif data["table"] == "reservations_dates":
-                remove_reservations_date(data["id"])
+                remove_reservations_date(int(data["id"]))
             elif data["table"] == "priority_groups":
-                remove_priority_group(data["id"])
+                remove_priority_group(int(data["id"]))
             elif data["table"] == "statuses":
-                remove_status(data["id"])
+                remove_status(int(data["id"]))
             else:
                 return jsonify({"result": "An error occured"})
             return jsonify({"result": "Successfully added user"})
@@ -87,15 +87,15 @@ def update_data():
         data = request.get_json()
         try:
             if data["table"] == "users":
-                update_user(data["user_id"], data["user_email"])
+                update_user(int(data["user_id"]), data["user_email"])
             elif data["table"] == "reservations":
-                update_reservation(data["reservation_id"], data["reservation_user_id"])
+                update_reservation(int(data["reservation_id"]), int(data["reservation_user_id"]))
             elif data["table"] == "reservations_dates":
-                update_reservations_date(data["reservation_date_id"], data["reservation_date_reservation_id"], data["reservation_date_status_id"], data["reservation_date_date_of_reservation"])
+                update_reservations_date(int(data["reservation_date_id"]), int(data["reservation_date_reservation_id"]), int(data["reservation_date_status_id"]), data["reservation_date_date_of_reservation"])
             elif data["table"] == "priority_groups":
-                update_priority_group(data["group_id"], data["priority_number"])
+                update_priority_group(int(data["group_id"]), data["priority_number"])
             elif data["table"] == "statuses":
-                update_status(data["status_id"], data["status_title"])
+                update_status(int(data["status_id"]), data["status_title"])
             else:
                 return jsonify({"result": "An error occured"})
             return jsonify({"result": "Successfully added user"})

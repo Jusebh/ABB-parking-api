@@ -4,16 +4,19 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from database.operations.connecting import connect_to_database
 from database.models import Reservations, Statuses, ReservationsDates
+from database.select_confing_data import select_config_data
 
 def add_reservation(user_id, day, month, dates: list, priority):
     result = []
+    next_month_open_hour = int(select_config_data("next_month_opening_hour"))
+    closing_hour = int(select_config_data("closing_hour"))
     hour = datetime.now().hour + 1
     current_day = datetime.now().day
     current_month = datetime.now().month
     current_year = datetime.now().year
 
     last_day = calendar.monthrange(current_year, int(month))[1]
-    if int(day) == last_day and hour >= 20:
+    if int(day) == last_day and hour >= next_month_open_hour:
         if current_month == 12:
             current_year += 1
             current_month = 1
@@ -35,9 +38,9 @@ def add_reservation(user_id, day, month, dates: list, priority):
             elif int(i) <= current_day or current_month < int(month):
                 result.append(f"Rezerwacja na dzień {i} nie powiodła się z powodu wybrania przeszłej daty.")
             elif int(i) == (current_day + 1) and current_month == int(month):
-                if hour >= 16:
+                if hour >= closing_hour:
                     result.append(f"Rezerwacje na dzień {i} są już zamknięte, przepraszamy.")
-                elif hour < 16:
+                elif hour < closing_hour:
                     date = f"{i}-{month}-{current_year}"
                     date = datetime.strptime(date, "%d-%m-%Y").date()
                     if priority == 1:

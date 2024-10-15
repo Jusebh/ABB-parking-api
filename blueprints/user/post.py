@@ -25,7 +25,7 @@ def reservation_data():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         data = request.get_json()
-        result = check_reservation_possibility(data["day"], data["month"], data["user_id"], data["dates"])
+        result = check_reservation_possibility(data["day"], data["month"], int(data["user_id"]), data["dates"])
         return jsonify({"result": result})
     else:
         return jsonify({"result": "Wrong content type"})
@@ -36,7 +36,7 @@ def reservation_date():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         data = request.get_json()
-        result = select_reservation_by_date(data["id"], data["day"], data["month"])
+        result = select_reservation_by_date(int(data["id"]), data["day"], data["month"])
         return jsonify({"result": result})
     else:
         return jsonify({"result": "Wrong content type"})
@@ -47,7 +47,7 @@ def user_id():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         data = request.get_json()
-        result =  select_user_email(data["id"])
+        result =  select_user_email(int(data["id"]))
         return jsonify({"result": result})
     else:
         return jsonify({"result": "Wrong content type"})
@@ -58,7 +58,7 @@ def notification_status():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         data = request.get_json()
-        update_notification_status(data["id"], data["status"])
+        update_notification_status(int(data["id"]), data["status"])
         return jsonify({"result": "changed"})
     else:
         return jsonify({"result": "Wrong content type"})
