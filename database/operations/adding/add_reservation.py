@@ -1,9 +1,9 @@
-from database.operations.connecting import connect_to_database
-from database.models import Reservations, Statuses, ReservationsDates
+import calendar
+from datetime import datetime
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from datetime import datetime
-import calendar
+from database.operations.connecting import connect_to_database
+from database.models import Reservations, Statuses, ReservationsDates
 
 def add_reservation(user_id, day, month, dates: list, priority):
     result = []
@@ -41,9 +41,9 @@ def add_reservation(user_id, day, month, dates: list, priority):
                     date = f"{i}-{month}-{current_year}"
                     date = datetime.strptime(date, "%d-%m-%Y").date()
                     if priority == 1:
-                        stmt = select(Statuses).where(Statuses.title == "Potwierdzony")
+                        stmt = select(Statuses).where(Statuses.title == "Approved")
                     else:
-                        stmt = select(Statuses).where(Statuses.title == "Oczekujący")
+                        stmt = select(Statuses).where(Statuses.title == "Pending")
                     status = session.scalars(stmt).one()
                     reservation_date = ReservationsDates(
                         reservation_id = reservation_id,
@@ -57,9 +57,9 @@ def add_reservation(user_id, day, month, dates: list, priority):
                 date = f"{i}-{month}-{current_year}"
                 date = datetime.strptime(date, "%d-%m-%Y").date()
                 if priority == 1:
-                    stmt = select(Statuses).where(Statuses.title == "Potwierdzony")
+                    stmt = select(Statuses).where(Statuses.title == "Approved")
                 else:
-                    stmt = select(Statuses).where(Statuses.title == "Oczekujący")
+                    stmt = select(Statuses).where(Statuses.title == "Pending")
                 status = session.scalars(stmt).one()
                 reservation_date = ReservationsDates(
                     reservation_id = reservation_id,

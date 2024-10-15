@@ -1,8 +1,8 @@
-from database.operations.connecting import connect_to_database
-from sqlalchemy import select
-from database.models import ReservationsDates, Reservations
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import extract
+from sqlalchemy import select
+from database.operations.connecting import connect_to_database
+from database.models import ReservationsDates, Reservations
 
 def select_user_reservations_by_month(user_id, month):
     with Session(connect_to_database()) as session:

@@ -1,8 +1,8 @@
-from database.operations.connecting import connect_to_database
+from datetime import datetime
 from sqlalchemy import update
 from sqlalchemy.orm import Session
+from database.operations.connecting import connect_to_database
 from database.models import ReservationsDates
-from datetime import datetime
 
 def update_reservations_date(reservation_date_id, reservation_date_reservation_id, reservation_date_status_id, reservation_date_date_of_reservation):
     reservation_date_date_of_reservation = datetime.strptime(reservation_date_date_of_reservation, "%Y-%m-%d").date()

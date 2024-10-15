@@ -1,8 +1,8 @@
-from database.operations.connecting import connect_to_database
-from database.models import ReservationsDates, Statuses
+from datetime import datetime
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from datetime import datetime
+from database.operations.connecting import connect_to_database
+from database.models import ReservationsDates, Statuses
 
 def select_count_of_reservations(day: str, month: str):
     date = f"{day}-{month}-{str(datetime.now().year)}"

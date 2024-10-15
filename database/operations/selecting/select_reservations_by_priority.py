@@ -1,9 +1,8 @@
-from sqlalchemy import select, desc
-from flask import jsonify
-from database.models import Reservations, ReservationsDates, Users, PriorityGroups
-from sqlalchemy.orm import Session
-from database.operations.connecting import connect_to_database
 from datetime import datetime
+from sqlalchemy import select, desc
+from sqlalchemy.orm import Session
+from database.models import Reservations, ReservationsDates, Users, PriorityGroups
+from database.operations.connecting import connect_to_database
 
 def select_reservation_by_priority(day, month, priority):
     with Session(connect_to_database()) as session:

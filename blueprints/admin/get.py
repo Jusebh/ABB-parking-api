@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify
-from database.operations.selecting.select_all_users import select_all_users
 from database.operations.selecting.select_all_priority_groups import select_all_priority_groups
 from database.operations.selecting.select_all_reservations_dates import select_all_reservations_dates
 from database.operations.selecting.select_all_statuses import select_all_statuses
+from database.operations.selecting.select_all_users import select_all_users
 
 get_all_users = Blueprint("get_all_users", __name__)
 @get_all_users.route("/admin/get/allUsers")

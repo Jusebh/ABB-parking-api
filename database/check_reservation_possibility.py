@@ -1,11 +1,11 @@
+import calendar
+from datetime import datetime
 from database.operations.adding.add_reservation import add_reservation
 from database.operations.selecting.select_count_of_reservations import select_count_of_reservations
 from database.operations.selecting.select_priority_group import select_priority_group
 from database.operations.selecting.select_reservations_by_priority import select_reservation_by_priority
 from database.operations.updating.update_reservation_status import update_reservation_status
 from database.operations.selecting.select_user_reservations_by_month import select_user_reservations_by_month
-from datetime import datetime
-import calendar
 
 def check_reservation_possibility(day: str, month: str, user_id, dates: list):
     result = []

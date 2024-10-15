@@ -1,6 +1,6 @@
-from database.operations.connecting import connect_to_database
 from sqlalchemy import update
 from sqlalchemy.orm import Session
+from database.operations.connecting import connect_to_database
 from database.models import Reservations
 
 def update_reservation(reservation_id, reservation_user_id):

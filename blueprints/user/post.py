@@ -4,7 +4,6 @@ from database.check_reservation_possibility import check_reservation_possibility
 from database.operations.selecting.select_reservation_by_date import select_reservation_by_date
 from database.operations.selecting.select_user_email import select_user_email
 from database.operations.updating.update_notification_status import update_notification_status
-from datetime import datetime
 
 receive_user_data = Blueprint("receive_user_data", __name__)
 @receive_user_data.route("/user/post/receiveUserData", methods=['POST'])

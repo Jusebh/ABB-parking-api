@@ -1,6 +1,6 @@
-from database.operations.connecting import connect_to_database
 from sqlalchemy import update
 from sqlalchemy.orm import Session
+from database.operations.connecting import connect_to_database
 from database.models import Users
 
 def update_notification_status(user_id, notification_status):

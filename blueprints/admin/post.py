@@ -2,11 +2,11 @@ from datetime import datetime
 from flask import Blueprint, request, jsonify
 from database.operations.adding.add_user import add_user
 from database.operations.adding.add_reservation import add_reservation
-from database.operations.removing.remove_user import remove_user
+from database.operations.removing.remove_priority_group import remove_priority_group
 from database.operations.removing.remove_reservation import remove_reservation
 from database.operations.removing.remove_reservations_date import remove_reservations_date
-from database.operations.removing.remove_priority_group import remove_priority_group
 from database.operations.removing.remove_status import remove_status
+from database.operations.removing.remove_user import remove_user
 from database.operations.updating.update_priority_groups import update_priority_group
 from database.operations.updating.update_reservations import update_reservation
 from database.operations.updating.update_reservations_dates import update_reservations_date

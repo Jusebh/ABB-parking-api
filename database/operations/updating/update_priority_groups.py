@@ -1,6 +1,6 @@
-from database.operations.connecting import connect_to_database
 from sqlalchemy import update
 from sqlalchemy.orm import Session
+from database.operations.connecting import connect_to_database
 from database.models import PriorityGroups
 
 def update_priority_group(group_id, priority_number):

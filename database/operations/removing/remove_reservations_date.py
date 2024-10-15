@@ -1,7 +1,7 @@
-from database.operations.connecting import connect_to_database
-from database.models import ReservationsDates
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from database.operations.connecting import connect_to_database
+from database.models import ReservationsDates
 
 def remove_reservations_date(id):
     with Session(connect_to_database()) as session:
