@@ -2,6 +2,8 @@ from sqlalchemy import update, select
 from sqlalchemy.orm import Session
 from database.operations.connecting import connect_to_database
 from database.models import ReservationsDates, Statuses
+from database.operations.selecting.select_email_by_reservation_id import select_email_by_reservation_id
+from communication.status_changed_mail import status_changed_mail
 
 def update_reservation_status(reservation_date_id, status):
     with Session(connect_to_database()) as session:
@@ -11,6 +13,11 @@ def update_reservation_status(reservation_date_id, status):
         try: 
             session.execute(stmt)
             session.commit()
+            stmt = select(ReservationsDates).where(ReservationsDates.id == reservation_date_id)
+            result = session.scalars(stmt).one_or_none()
+            date = result.date_of_reservation
+            email = select_email_by_reservation_id(reservation_date_id)
+            status_changed_mail(email, date, status)
         except:
             return False
         return True

@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import Blueprint, request, jsonify
 from database.operations.adding.add_user import add_user
 from database.operations.adding.add_reservation import add_reservation
+from communication.admin_mail import admin_mail
 from database.operations.removing.remove_priority_group import remove_priority_group
 from database.operations.removing.remove_reservation import remove_reservation
 from database.operations.removing.remove_reservations_date import remove_reservations_date
@@ -103,3 +104,17 @@ def update_data():
             return jsonify({"result": "Couldn't add user"})
     else:
         return jsonify({"result": "Wrong content type"})
+    
+receive_email_data = Blueprint("receive_email_data", __name__)
+@receive_email_data.route("/admin/post/receiveEmailData", methods=['POST'])
+def email_data():
+    content_type = request.headers.get("Content-Type")
+    if content_type == 'application/json':
+        data = request.get_json()
+        try:
+            admin_mail(data["email_list"], data["content"], data["subject"])
+            return jsonify({"result": "Email has been sent."})
+        except:
+            return jsonify({"result": "Something went wrong."})
+    else:
+        return jsonify("Wrong content type")

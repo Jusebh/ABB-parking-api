@@ -3,7 +3,7 @@ from azure.communication.email import EmailClient
 
 connection_string = os.getenv("EMAIL_CONN_STRING")
 
-def mail(email_adress, date_of_reservation):
+def notify_mail(email_adress, date_of_reservation):
     email_client = EmailClient.from_connection_string(os.getenv("EMAIL_CONN_STRING"))
     message = {
         "content":{
