@@ -20,7 +20,7 @@ def update_reservation_status(reservation_date_id, status):
             result = session.scalars(stmt).one_or_none()
             date = result.date_of_reservation
             email = select_email_by_reservation_id(reservation_date_id)
-            id = select_user_id(email)
+            id = select_user_id(email)["id"]
             notification_status = select_user_notification_status(id)
             if notification_status:
                 thread = threading.Thread(target = status_changed_mail, args=(email, date, status))
