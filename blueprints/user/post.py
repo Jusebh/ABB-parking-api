@@ -2,8 +2,10 @@ from flask import Blueprint, request, jsonify
 from database.operations.adding.add_user import add_user
 from database.check_reservation_possibility import check_reservation_possibility
 from database.operations.selecting.select_reservation_by_date import select_reservation_by_date
+from database.operations.selecting.select_reservation_id import select_reservation_id
 from database.operations.selecting.select_user_email import select_user_email
 from database.operations.updating.update_notification_status import update_notification_status
+from database.operations.updating.update_reservation_status import update_reservation_status
 
 receive_user_data = Blueprint("receive_user_data", __name__)
 @receive_user_data.route("/user/post/receiveUserData", methods=['POST'])
@@ -62,3 +64,16 @@ def notification_status():
         return jsonify({"result": "changed"})
     else:
         return jsonify({"result": "Wrong content type"})
+    
+cancel_reservation = Blueprint("cancel_reservation", __name__)
+@cancel_reservation.route("/user/post/cancelReservation", methods=['POST'])
+def cancel():
+    content_type = request.headers.get('Content-Type')
+    if(content_type == 'application/json'):
+        data = request.get_json()
+        reservation_id = select_reservation_id(data["user_id"], data["day"], data["month"])
+        if reservation_id:
+            update_reservation_status(reservation_id, "Canceled")
+            return jsonify({"result": True})
+        else:
+            return jsonify({"result": False})
