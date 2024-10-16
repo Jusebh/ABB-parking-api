@@ -1,3 +1,4 @@
+import threading
 from sqlalchemy import update, select
 from sqlalchemy.orm import Session
 from database.operations.connecting import connect_to_database
@@ -17,7 +18,8 @@ def update_reservation_status(reservation_date_id, status):
             result = session.scalars(stmt).one_or_none()
             date = result.date_of_reservation
             email = select_email_by_reservation_id(reservation_date_id)
-            status_changed_mail(email, date, status)
+            thread = threading.Thread(target = status_changed_mail, args=(email, date, status))
+            thread.start()
         except:
             return False
         return True
