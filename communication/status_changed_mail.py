@@ -10,6 +10,8 @@ def status_changed_mail(email_adress, date_of_reservation, new_status):
         new_status = "Odrzucony"
     elif new_status == "Pending":
         new_status = "Oczekujący"
+    elif new_status == "Cancelled":
+        new_status = "Anulowany"
     email_client = EmailClient.from_connection_string(os.getenv("EMAIL_CONN_STRING"))
     message = {
         "content":{
