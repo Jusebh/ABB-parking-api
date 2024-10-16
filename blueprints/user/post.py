@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from database.operations.adding.add_user import add_user
 from database.check_reservation_possibility import check_reservation_possibility
+from database.select_confing_data import select_config_data
+from database.operations.selecting.select_count_of_reservations import select_count_of_reservations
 from database.operations.selecting.select_reservation_by_date import select_reservation_by_date
 from database.operations.selecting.select_reservation_id import select_reservation_id
 from database.operations.selecting.select_user_email import select_user_email
@@ -77,3 +79,18 @@ def cancel():
             return jsonify({"result": True})
         else:
             return jsonify({"result": False})
+    else:
+        return jsonify({"result": "Wrong content type"})
+        
+free_spaces_count = Blueprint("free_spaces_count", __name__)
+@free_spaces_count.route("/user/post/freeSpacesCount", methods=['POST'])
+def free_spaces():
+    content_type = request.headers.get('Content-Type')
+    if content_type == 'applicaiton/json':
+        data = request.get_json()
+        total_spaces_count = select_config_data("parking_spots_number")
+        occupied_spaces_count = select_count_of_reservations(data["day"], data["month"])
+        free_spaces = total_spaces_count - occupied_spaces_count
+        return jsonify({"result": {"total_spaces": total_spaces_count, "free_spaces": free_spaces}})
+    else:
+        return jsonify({"result": "Wrong content type"})

@@ -8,11 +8,13 @@ from database.operations.selecting.select_count_of_reservations import select_co
 from database.operations.selecting.select_priority_group import select_priority_group
 from database.operations.selecting.select_reservations_by_priority import select_reservation_by_priority
 from database.operations.selecting.select_user_email import select_user_email
+from database.operations.selecting.select_user_notification_status import select_user_notification_status
 from database.operations.selecting.select_user_reservations_by_month import select_user_reservations_by_month
 from database.operations.updating.update_reservation_status import update_reservation_status
 
 def check_reservation_possibility(day: str, month: str, user_id, dates: list):
     dates = list(set(dates))
+    notification_status = select_user_notification_status(user_id)
     email = select_user_email(int(user_id))["email"]
     number_of_parking_spots = int(select_config_data("parking_spots_number"))
     result = []
@@ -36,8 +38,9 @@ def check_reservation_possibility(day: str, month: str, user_id, dates: list):
                     update_reservation_status(reservation_to_replace, "Rejected")
         result += add_reservation(int(user_id), day, month, dates, priority)
         if len(dates):
-            thread = threading.Thread(target=new_reservation_mail, args=(email, dates))
-            thread.start()
+            if notification_status:
+                thread = threading.Thread(target=new_reservation_mail, args=(email, dates))
+                thread.start()
     elif priority == 2:
         new_dates = dates.copy()
         for i in dates:
@@ -51,8 +54,9 @@ def check_reservation_possibility(day: str, month: str, user_id, dates: list):
                         new_dates.remove(i)
         result += add_reservation(int(user_id), day, month, new_dates, priority)
         if len(new_dates):
-            thread = threading.Thread(target=new_reservation_mail, args=(email, dates))
-            thread.start()
+            if notification_status:
+                thread = threading.Thread(target=new_reservation_mail, args=(email, dates))
+                thread.start()
     elif priority == 3:
         new_dates = dates.copy()
         for i in dates:
@@ -62,6 +66,7 @@ def check_reservation_possibility(day: str, month: str, user_id, dates: list):
                     new_dates.remove(i)
         result += add_reservation(int(user_id), day, month, new_dates, priority)
         if len(new_dates):
-            thread = threading.Thread(target=new_reservation_mail, args=(email, dates))
-            thread.start()
+            if notification_status:
+                thread = threading.Thread(target=new_reservation_mail, args=(email, dates))
+                thread.start()
     return result            

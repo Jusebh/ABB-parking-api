@@ -4,7 +4,7 @@ from flask_apscheduler import APScheduler
 from blueprints.admin.get import get_all_priority_groups, get_all_reservations_dates, get_all_statuses, get_all_users
 from blueprints.admin.post import receive_new_user_data, receive_new_reservation_data, receive_remove_data, receive_update_data, receive_email_data
 from blueprints.user.oauth import get_login_link, get_logout_link, logout_success_msg, auth_response, find_user, get_user_data
-from blueprints.user.post import receive_reservation_data, receive_user_data, receive_reservation_date, receive_user_id, change_notification_status, cancel_reservation
+from blueprints.user.post import receive_reservation_data, receive_user_data, receive_reservation_date, receive_user_id, change_notification_status, cancel_reservation, free_spaces_count
 from communication.check_reservations import check_reservations
 from database.operations.create_tables import create_tables
 import app_config
@@ -39,6 +39,7 @@ app.register_blueprint(receive_reservation_date)
 app.register_blueprint(receive_user_id)
 app.register_blueprint(change_notification_status)
 app.register_blueprint(cancel_reservation)
+app.register_blueprint(free_spaces_count)
 
 scheduler = APScheduler()
 

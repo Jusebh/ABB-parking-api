@@ -19,7 +19,7 @@ def select_count_of_reservations(day: str, month: str):
     
     date = f"{day}-{month}-{current_year}"
     with Session(connect_to_database()) as session:
-        stmt = select(ReservationsDates).join(ReservationsDates.statuses).where(ReservationsDates.date_of_reservation == date).where(Statuses.title != "Odrzucony")
+        stmt = select(ReservationsDates).join(ReservationsDates.statuses).where(ReservationsDates.date_of_reservation == date).where(Statuses.title != "Rejected").where(Statuses.title != "Cancelled")
         try:
             return session.scalars(stmt).all().count()
         except:
