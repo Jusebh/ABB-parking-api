@@ -18,15 +18,11 @@ def select_count_of_reservations(day: str, month: str):
         current_year += 1
     
     date = f"{day}-{month}-{current_year}"
+    date = datetime.strptime(date, "%d-%m-%Y").date()
     with Session(connect_to_database()) as session:
         stmt = select(ReservationsDates).join(ReservationsDates.statuses).where(ReservationsDates.date_of_reservation == date).where(Statuses.title != "Rejected").where(Statuses.title != "Cancelled")
-        try:
-            return session.scalars(stmt).all().count()
-        except:
-            return 0
-        
-        
-        
-        
-        
-        
+        result = session.scalars(stmt).all()
+        counter = 0
+        for i in result:
+            counter += 1
+        return counter

@@ -86,11 +86,11 @@ free_spaces_count = Blueprint("free_spaces_count", __name__)
 @free_spaces_count.route("/user/post/freeSpacesCount", methods=['POST'])
 def free_spaces():
     content_type = request.headers.get('Content-Type')
-    if content_type == 'applicaiton/json':
+    if (content_type == 'application/json'):
         data = request.get_json()
         total_spaces_count = select_config_data("parking_spots_number")
         occupied_spaces_count = select_count_of_reservations(data["day"], data["month"])
-        free_spaces = total_spaces_count - occupied_spaces_count
+        free_spaces = int(total_spaces_count) - int(occupied_spaces_count)
         return jsonify({"result": {"total_spaces": total_spaces_count, "free_spaces": free_spaces}})
     else:
         return jsonify({"result": "Wrong content type"})
