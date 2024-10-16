@@ -73,7 +73,7 @@ def cancel():
         data = request.get_json()
         reservation_id = select_reservation_id(data["user_id"], data["day"], data["month"])
         if reservation_id:
-            update_reservation_status(reservation_id, "Canceled")
+            update_reservation_status(reservation_id, "Cancelled")
             return jsonify({"result": True})
         else:
             return jsonify({"result": False})
