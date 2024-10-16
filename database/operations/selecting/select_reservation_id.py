@@ -2,11 +2,12 @@ import calendar
 from datetime import datetime
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from database.models import Reservations, ReservationsDates, Statuses
 from database.operations.connecting import connect_to_database
 from database.select_confing_data import select_config_data
-from database.models import ReservationsDates, Statuses
 
-def select_count_of_reservations(day: str, month: str):
+
+def select_reservation_id(user_id, day, month):
     next_month_open_hour = int(select_config_data("next_month_opening_hour"))
     current_hour = datetime.now().hour
     current_day = datetime.now().day
@@ -18,15 +19,13 @@ def select_count_of_reservations(day: str, month: str):
         current_year += 1
     
     date = f"{day}-{month}-{current_year}"
+    date = datetime.strptime(date, "%d-%m-%Y").date()
     with Session(connect_to_database()) as session:
-        stmt = select(ReservationsDates).join(ReservationsDates.statuses).where(ReservationsDates.date_of_reservation == date).where(Statuses.title != "Odrzucony")
-        try:
-            return session.scalars(stmt).all().count()
-        except:
-            return 0
-        
-        
-        
-        
-        
-        
+        stmt = select(ReservationsDates).join(ReservationsDates.reservations).join(ReservationsDates.statuses).where(Reservations.user_id == user_id).where(ReservationsDates.date_of_reservation == date).where(Statuses.title != "Cancelled")
+        result = session.scalars(stmt).one_or_none()
+        if result:
+            return result.id
+        else:
+            return None
+    
+    

@@ -16,7 +16,7 @@ def add_reservation(user_id, day, month, dates: list, priority):
     current_year = datetime.now().year
 
     last_day = calendar.monthrange(current_year, int(month))[1]
-    if int(day) == last_day and hour >= next_month_open_hour:
+    if int(current_day) == last_day and hour >= next_month_open_hour:
         if current_month == 12:
             current_year += 1
             current_month = 1
