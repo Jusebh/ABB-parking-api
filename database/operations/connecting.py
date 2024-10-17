@@ -2,6 +2,5 @@ import os
 from sqlalchemy import create_engine
 
 def connect_to_database():
-    # connection_string = os.getenv("CONN_STRING")
-    connection_string = "sqlite:///test.db"
+    connection_string = os.getenv("DB")
     return create_engine(connection_string, echo = True)
