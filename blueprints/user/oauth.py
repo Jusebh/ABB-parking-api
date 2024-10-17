@@ -14,7 +14,7 @@ get_login_link = Blueprint("get_login_link", __name__)
 def login():
     log_in = auth.log_in(
         scopes = app_config.SCOPE,
-        redirect_uri = url_for("auth_response.response", _external=True),
+        redirect_uri = url_for("auth_response.response", _external=True, _scheme="https"),
         prompt = "select_account"
     )
     return jsonify({ "link": log_in['auth_uri'] })
