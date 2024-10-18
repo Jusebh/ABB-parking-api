@@ -34,7 +34,7 @@ def logout_success():
 auth_response = Blueprint("auth_response", __name__, template_folder="templates")
 @auth_response.route(app_config.REDIRECT_PATH)
 def response():
-    result = auth.complete_log_in(request.args, _scheme="https")
+    result = auth.complete_log_in(request.args)
     if "error" in result:
         return render_template("login_error.html")
     return render_template("login_success.html")
