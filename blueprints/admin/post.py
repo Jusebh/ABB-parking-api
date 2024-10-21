@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from database.operations.adding.add_user import add_user
 from database.operations.adding.add_reservation import add_reservation
 from communication.admin_mail import admin_mail
+from database.check_reservation_possibility import check_reservation_possibility
 from database.operations.removing.remove_priority_group import remove_priority_group
 from database.operations.removing.remove_reservation import remove_reservation
 from database.operations.removing.remove_reservations_date import remove_reservations_date
@@ -20,10 +21,10 @@ def new_user_data():
     content_type = request.headers.get('Content-Type')
     if content_type == 'application/json':
         data = request.get_json()
-        try:
-            add_user(data["email"], data["priority_group_id"])
+        success = add_user(data["email"], data["priority_group_id"])
+        if success:
             return jsonify({"result": "Successfully added user"})
-        except:
+        else:
             return jsonify({"result": "Couldn't add user"})
     else:
         return jsonify({"result": "Wrong content type"})
@@ -38,19 +39,7 @@ def new_reservation_data():
     result = []
     if (content_type == 'application/json'):
         data = request.get_json()
-        dates = data["dates"]
-        for i in dates:
-            if int(i) <= current_day and data["month"] == current_month:
-                if i == current_day and current_hour >= 16:
-                    result.append(f"Reservation on {i} can't be completed (it's too late).")
-                else:
-                    result.append(f"Reservation on past date can't be made.")
-            else:
-                try:
-                    add_reservation(data["id"], i, data["month"])
-                    result.append(f"Reservation on day {i} was made.")
-                except Exception as e:
-                    result.append(f"Reservation on day {i} can't be made, because of {e} error.")
+        result = check_reservation_possibility(day = data["day"], month= data["month"], user_id = data["user_id"], dates = data["dates"])
         return jsonify({"result": result})
     else:
         return jsonify({"result": "Wrong content type"})
@@ -88,13 +77,13 @@ def update_data():
         data = request.get_json()
         try:
             if data["table"] == "users":
-                update_user(int(data["user_id"]), data["user_email"])
+                update_user(int(data["user_id"]), data["user_email"], data["priority_group_title"], data["notifications"], data["role"])
             elif data["table"] == "reservations":
                 update_reservation(int(data["reservation_id"]), int(data["reservation_user_id"]))
             elif data["table"] == "reservations_dates":
                 update_reservations_date(int(data["reservation_date_id"]), int(data["reservation_date_reservation_id"]), int(data["reservation_date_status_id"]), data["reservation_date_date_of_reservation"])
             elif data["table"] == "priority_groups":
-                update_priority_group(int(data["group_id"]), data["priority_number"])
+                update_priority_group(int(data["group_id"]), data["title"], data["priority_number"])
             elif data["table"] == "statuses":
                 update_status(int(data["status_id"]), data["status_title"])
             else:
