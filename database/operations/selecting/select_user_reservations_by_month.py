@@ -12,6 +12,8 @@ def select_user_reservations_by_month(user_id, month):
             query = session.scalars(stmt).all()
             for i in query:
                 dates_tab.append(i.date_of_reservation.day)
+            session.close()
             return dates_tab
         except:
+            session.close()
             return dates_tab

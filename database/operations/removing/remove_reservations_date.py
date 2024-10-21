@@ -10,5 +10,8 @@ def remove_reservations_date(id):
         if result:
             session.delete(result)
             session.commit()
+            session.close()
             return True
-        return False
+        else:
+            session.close()
+            return False
