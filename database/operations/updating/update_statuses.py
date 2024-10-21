@@ -9,6 +9,8 @@ def update_status(status_id, status_title):
         try: 
             session.execute(stmt)
             session.commit()
+            session.close()
+            return True
         except:
+            session.close()
             return False
-        return True

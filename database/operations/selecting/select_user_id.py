@@ -8,6 +8,8 @@ def select_user_id(email):
         stmt = select(Users).where(Users.email == email)
         result = session.scalars(stmt).one_or_none()
         if result:
+            session.close()
             return {"id": result.id}
         else:
+            session.close()
             return {"id": None}

@@ -9,6 +9,8 @@ def update_user(user_id, user_email):
         try: 
             session.execute(stmt)
             session.commit()
+            session.close()
+            return True
         except:
+            session.close()
             return False
-        return True

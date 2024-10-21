@@ -15,4 +15,5 @@ def select_reservation_to_notify():
                 if i.statuses.title == "Potwierdzony":
                     if (i.date_of_reservation - today).days <= 1:
                         email_tab.append({"email": i.reservations.users.email, "date": i.date_of_reservation})
+        session.close()
         return email_tab

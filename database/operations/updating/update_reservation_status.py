@@ -25,6 +25,8 @@ def update_reservation_status(reservation_date_id, status):
             if notification_status:
                 thread = threading.Thread(target = status_changed_mail, args=(email, date, status))
                 thread.start()
+            session.close()
+            return True
         except:
+            session.close()
             return False
-        return True

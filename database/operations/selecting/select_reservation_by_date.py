@@ -25,8 +25,10 @@ def select_reservation_by_date(user_id, day, month):
             reservations_tab = []
             for reservation in result:
                 reservations_tab.append({"day": reservation.date_of_reservation.day, "status": reservation.statuses.title})
+            session.close()
             return reservations_tab
         except:
+            session.close()
             return None
         
         
