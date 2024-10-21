@@ -9,6 +9,8 @@ def update_priority_group(group_id, priority_number):
         try: 
             session.execute(stmt)
             session.commit()
+            session.close()
+            return True
         except:
+            session.close()
             return False
-        return True

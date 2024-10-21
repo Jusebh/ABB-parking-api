@@ -10,4 +10,5 @@ def select_all_priority_groups():
         priority_groups_tab = []
         for priority_group in result:
             priority_groups_tab.append({"id": priority_group.id, "priority": priority_group.priority})
+        session.close()
         return priority_groups_tab

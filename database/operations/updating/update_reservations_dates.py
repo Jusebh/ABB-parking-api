@@ -11,6 +11,8 @@ def update_reservations_date(reservation_date_id, reservation_date_reservation_i
         try: 
             session.execute(stmt)
             session.commit()
+            session.close()
+            return True
         except:
+            session.close()
             return False
-        return True

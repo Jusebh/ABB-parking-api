@@ -13,3 +13,4 @@ def update_notification_status(user_id, notification_status):
         stmt = update(Users).where(Users.id == user_id).values(notifications = notification_status)
         session.execute(stmt)
         session.commit()
+        session.close()

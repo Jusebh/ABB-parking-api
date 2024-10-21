@@ -9,6 +9,8 @@ def update_reservation(reservation_id, reservation_user_id):
         try: 
             session.execute(stmt)
             session.commit()
+            session.close()
+            return True
         except:
+            session.close()
             return False
-        return True

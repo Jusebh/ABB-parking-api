@@ -10,4 +10,5 @@ def select_all_statuses():
         statuses_tab = []
         for stasus in result:
             statuses_tab.append({"id": stasus.id, "title": stasus.title})
+        session.close()
         return statuses_tab

@@ -10,4 +10,5 @@ def select_all_users():
         users_tab = []
         for user in result:
             users_tab.append({"id": user.id, "email": user.email, "priority_group": user.priority_groups.priority})
+        session.close()
         return users_tab

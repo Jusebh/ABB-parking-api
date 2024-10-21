@@ -8,6 +8,8 @@ def select_email_by_reservation_id(reservation_id):
         stmt = select(Users).join(Users.reservations).join(Reservations.reservations_dates).where(ReservationsDates.id == reservation_id)
         result = session.scalars(stmt).one_or_none()
         if result:
+            session.close()
             return result.email
         else:
+            session.close()
             return None

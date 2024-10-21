@@ -25,4 +25,5 @@ def select_count_of_reservations(day: str, month: str):
         counter = 0
         for i in result:
             counter += 1
+        session.close()
         return counter
