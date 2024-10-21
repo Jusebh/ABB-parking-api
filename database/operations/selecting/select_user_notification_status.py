@@ -10,4 +10,4 @@ def select_user_notification_status(user_id):
         if result:
             return result.notifications
         else:
-            return False
+            return None

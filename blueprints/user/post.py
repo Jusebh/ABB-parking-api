@@ -6,6 +6,7 @@ from database.operations.selecting.select_count_of_reservations import select_co
 from database.operations.selecting.select_reservation_by_date import select_reservation_by_date
 from database.operations.selecting.select_reservation_id import select_reservation_id
 from database.operations.selecting.select_user_email import select_user_email
+from database.operations.selecting.select_user_notification_status import select_user_notification_status
 from database.operations.updating.update_notification_status import update_notification_status
 from database.operations.updating.update_reservation_status import update_reservation_status
 
@@ -92,5 +93,19 @@ def free_spaces():
         occupied_spaces_count = select_count_of_reservations(data["day"], data["month"])
         free_spaces = int(total_spaces_count) - int(occupied_spaces_count)
         return jsonify({"result": {"total_spaces": total_spaces_count, "free_spaces": free_spaces}})
+    else:
+        return jsonify({"result": "Wrong content type"})
+    
+display_notification_status = Blueprint("display_notification_status", __name__)
+@display_notification_status.route("/user/post/displayNotificationStatus", methods=['POST'])
+def display_status():
+    content_type = request.headers.get('Content-Type')
+    if (content_type == 'application/json'):
+        data = request.get_json()
+        status = select_user_notification_status(int(data["user_id"]))
+        if status != None:
+            return jsonify({"result": {"status": status}})
+        else:
+            return jsonify({"result": {"stauts": None}})
     else:
         return jsonify({"result": "Wrong content type"})
