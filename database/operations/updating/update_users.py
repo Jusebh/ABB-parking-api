@@ -11,7 +11,7 @@ def update_user(user_id, user_email, priority_group, notifications, role):
             notifications = True
         elif notifications == "False":
             notifications = False
-        stmt = update(Users).where(Users.id == user_id).values(email = user_email, priority_group = int(priority_group_id), notifications = notifications, role = role)
+        stmt = update(Users).where(Users.id == user_id).values(email = user_email, priority_group_id = int(priority_group_id), notifications = notifications, role = role)
         try: 
             session.execute(stmt)
             session.commit()

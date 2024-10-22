@@ -9,6 +9,6 @@ def select_all_reservations_dates():
         result = session.scalars(stmt).all()
         reservations_tab = []
         for reservation_date in result:
-            reservations_tab.append({"id": reservation_date.id, "user": reservation_date.reservations.users.email, "date_of_reservation": reservation_date.date_of_reservation, "status": reservation_date.statuses.title})
+            reservations_tab.append({"id": reservation_date.id, "reservation_id": reservation_date.reservation_id,"user": reservation_date.reservations.users.email, "date_of_reservation": reservation_date.date_of_reservation, "status": reservation_date.status_id})
         session.close()
         return reservations_tab

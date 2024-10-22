@@ -9,6 +9,6 @@ def select_all_users():
         result = session.scalars(stmt).all()
         users_tab = []
         for user in result:
-            users_tab.append({"id": user.id, "email": user.email, "priority_group": user.priority_groups.priority})
+            users_tab.append({"id": user.id, "email": user.email, "priority_group": user.priority_groups.priority, "notification": user.notifications, "role": user.role})
         session.close()
         return users_tab
