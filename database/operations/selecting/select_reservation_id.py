@@ -22,8 +22,9 @@ def select_reservation_id(user_id, day, month):
     date = datetime.strptime(date, "%d-%m-%Y").date()
     with Session(connect_to_database()) as session:
         stmt = select(ReservationsDates).join(ReservationsDates.reservations).join(ReservationsDates.statuses).where(Reservations.user_id == int(user_id)).where(ReservationsDates.date_of_reservation == date).where(Statuses.title != "Cancelled")
-        result = session.scalars(stmt).one_or_none().id
+        result = session.scalars(stmt).one_or_none()
         if result:
+            result = result.id
             session.close()
             return result
         else:

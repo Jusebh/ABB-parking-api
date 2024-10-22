@@ -4,6 +4,7 @@ from azure.communication.email import EmailClient
 connection_string = os.getenv("EMAIL_CONN_STRING")
 
 def notify_mail(email_adress, date_of_reservation):
+  try:
     email_client = EmailClient.from_connection_string(os.getenv("EMAIL_CONN_STRING"))
     message = {
         "content":{
@@ -32,3 +33,5 @@ def notify_mail(email_adress, date_of_reservation):
     
     poller = email_client.begin_send(message)
     print(poller.result())
+  except:
+    print("Something went wrong")
