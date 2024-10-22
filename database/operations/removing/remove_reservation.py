@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from database.operations.connecting import connect_to_database
 from database.models import Reservations
 
+
 def remove_reservation(id):
     with Session(connect_to_database()) as session:
         stmt = select(Reservations).where(Reservations.id == id)
