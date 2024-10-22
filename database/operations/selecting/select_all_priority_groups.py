@@ -9,6 +9,6 @@ def select_all_priority_groups():
         result = session.scalars(stmt).all()
         priority_groups_tab = []
         for priority_group in result:
-            priority_groups_tab.append({"id": priority_group.id, "priority": priority_group.priority})
+            priority_groups_tab.append({"id": priority_group.id, "priority": priority_group.priority, "title": priority_group.title})
         session.close()
         return priority_groups_tab

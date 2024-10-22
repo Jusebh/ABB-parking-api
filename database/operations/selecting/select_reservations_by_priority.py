@@ -22,9 +22,9 @@ def select_reservation_by_priority(day, month, priority):
             date = f"{day}-{month}-{current_year}"
             stmt = select(ReservationsDates).join(ReservationsDates.reservations).join(Reservations.users).join(Users.priority_groups).where(ReservationsDates.date_of_reservation == date).where(PriorityGroups.priority > int(priority)).order_by(desc(PriorityGroups.priority)).order_by(desc(Reservations.created_at))
             try:
-                result = session.scalars(stmt).first()  
+                result = session.scalars(stmt).first().reservation_id
                 session.close()         
-                return result.reservation_id
+                return result
             except:
                 session.close()
                 return None
