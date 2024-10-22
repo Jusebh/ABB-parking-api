@@ -30,7 +30,3 @@ def select_reservation_by_date(user_id, day, month):
         except:
             session.close()
             return None
-        
-        
-        
-        
