@@ -21,11 +21,11 @@ def select_reservation_id(user_id, day, month):
     date = f"{day}-{month}-{current_year}"
     date = datetime.strptime(date, "%d-%m-%Y").date()
     with Session(connect_to_database()) as session:
-        stmt = select(ReservationsDates).join(ReservationsDates.reservations).join(ReservationsDates.statuses).where(Reservations.user_id == user_id).where(ReservationsDates.date_of_reservation == date).where(Statuses.title != "Cancelled")
-        result = session.scalars(stmt).one_or_none()
+        stmt = select(ReservationsDates).join(ReservationsDates.reservations).join(ReservationsDates.statuses).where(Reservations.user_id == int(user_id)).where(ReservationsDates.date_of_reservation == date).where(Statuses.title != "Cancelled")
+        result = session.scalars(stmt).one_or_none().id
         if result:
             session.close()
-            return result.id
+            return result
         else:
             session.close()
             return None

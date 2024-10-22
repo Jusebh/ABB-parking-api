@@ -74,7 +74,7 @@ def cancel():
     content_type = request.headers.get('Content-Type')
     if(content_type == 'application/json'):
         data = request.get_json()
-        reservation_id = select_reservation_id(data["user_id"], data["day"], data["month"])
+        reservation_id = select_reservation_id(int(data["user_id"]), data["day"], data["month"])
         if reservation_id:
             update_reservation_status(reservation_id, "Cancelled")
             return jsonify({"result": True})
