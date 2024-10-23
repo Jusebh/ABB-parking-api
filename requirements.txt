@@ -5,3 +5,5 @@ flask_session
 identity
 psycopg2
 SQLAlchemy
+flask-dance
+flask-login
