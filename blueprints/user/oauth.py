@@ -1,60 +1,54 @@
-import identity.web, requests
-from flask import Blueprint, jsonify, render_template, request, session, url_for
 import app_config
+from flask import Blueprint, flash, render_template, url_for
+from flask_dance.consumer import oauth_authorized, oauth_error
+from flask_dance.consumer.storage.sqla import SQLAlchemyStorage
+from flask_dance.contrib.azure import make_azure_blueprint
+from flask_login import current_user, login_required, login_user, logout_user
+from sqlalchemy.orm import Session
+from database.models import OAuth
+from database.operations.adding.add_oauth import add_oauth
+from database.operations.adding.add_user import add_user
+from database.operations.connecting import connect_to_database
+from database.operations.selecting.select_oauth import select_oauth
 
-auth = identity.web.Auth(
-    session = session,
-    authority = app_config.AUTHORITY,
+blueprint = make_azure_blueprint(
     client_id = app_config.CLIENT_ID,
-    client_credential = app_config.CLIENT_SECRET
+    client_secret = app_config.CLIENT_SECRET,
+    scope = app_config.SCOPE,
+    storage = SQLAlchemyStorage(OAuth, Session(connect_to_database()), user=current_user),
+    tenant = app_config.TENANT_ID,
 )
 
-get_login_link = Blueprint("get_login_link", __name__)
-@get_login_link.route("/user/oauth/getLoginLink")
-def login():
-    log_in = auth.log_in(
-        scopes = app_config.SCOPE,
-        redirect_uri = url_for("auth_response.response", _external=True),
-        prompt = "select_account"
+@oauth_authorized.connect_via(blueprint)
+def azure_logged_in(blueprint, token):
+    if not token:
+        return False
+    resp = blueprint.session.get(app_config.ENDPOINT)
+    if not resp.ok:
+        return False
+    info = resp.json()
+    user_id = info["id"]
+    oauth = select_oauth(provider=blueprint.name, provider_user_id=user_id)
+    if not oauth:
+        oauth = add_oauth(blueprint.name, user_id, token)
+    if oauth.users:
+        login_user(oauth.users)
+    else:
+        user = add_user(info["mail"], "Basic")
+        oauth.users = user
+        login_user(user)
+    return False
+
+@oauth_error.connect_via(blueprint)
+def azure_error(blueprint, message, response):
+    msg = ("OAuth error from {name}." "message={message}" "response={response}").format(
+        name = blueprint.name, message = message, response = response
     )
-    return jsonify({ "link": log_in['auth_uri'] })
+    flash(msg, category="error")
 
-get_logout_link = Blueprint("get_logout_link", __name__)
-@get_logout_link.route("/user/oauth/getLogoutLink")
-def logout():
-    log_out_link = auth.log_out(url_for("logout_success_msg.logout_success", _external=True))
-    print(log_out_link)
-    return jsonify({ "link": log_out_link })
-
-logout_success_msg = Blueprint("logout_success_msg", __name__, template_folder="templates")
-@logout_success_msg.route("/user/oauth/logoutSuccess")
-def logout_success():
-    return render_template("logout_success.html")
-
-auth_response = Blueprint("auth_response", __name__, template_folder="templates")
-@auth_response.route(app_config.REDIRECT_PATH)
-def response():
-    result = auth.complete_log_in(request.args)
-    if "error" in result:
-        return render_template("login_error.html")
-    return render_template("login_success.html")
-
-find_user = Blueprint("find_user", __name__)
-@find_user.route("/user/oauth/findUser")
-def user():
-    if not auth.get_user():
-        return jsonify({ "isLoggedIn": False })
-    return jsonify({ "isLoggedIn": True })
-
-get_user_data = Blueprint("get_user_data", __name__)
-@get_user_data.route("/user/oauth/getUserData")
-def user_data():
-    token = auth.get_token_for_user(app_config.SCOPE)
-    if "error" in token:
-        return jsonify({ "result": None })
-    api_result = requests.get(
-        app_config.ENDPOINT,
-        headers = {'Authorization': 'Bearer ' + token['access_token']},
-        timeout = 30
-    ).json()
-    return jsonify({ "result": api_result })
+logout = Blueprint("logout", __name__, template_folder="templates")
+@logout.route("/user/oauth/logout")
+@login_required
+def logout_function():
+    logout_user()
+    return render_template("logout_success")
