@@ -7,5 +7,10 @@ def select_config_data(name):
     with Session(connect_to_database()) as session:
         stmt = select(Config).where(Config.name == name)
         result = session.scalars(stmt).one_or_none()
-        session.close()
-        return result.value
+        if result:
+            result = result.value
+            session.close()
+            return result
+        else:
+            session.close()
+            return None

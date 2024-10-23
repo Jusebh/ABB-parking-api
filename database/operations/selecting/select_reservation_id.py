@@ -30,5 +30,3 @@ def select_reservation_id(user_id, day, month):
         else:
             session.close()
             return None
-    
-    
