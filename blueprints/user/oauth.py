@@ -45,3 +45,10 @@ def azure_error(blueprint, message, response):
         name = blueprint.name, message = message, response = response
     )
     flash(msg, category="error")
+
+logout = Blueprint("logout", __name__, template_folder="templates")
+@logout.route("/user/oauth/logout")
+@login_required
+def logout_function():
+    logout_user()
+    return render_template("logout_success")
