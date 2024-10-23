@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: 'abb-parking'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B559A7D165A843E59AB067F8273354F5 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_73A64B05B81242E7AFE684DD66311B5B }}
