@@ -31,6 +31,7 @@ def select_reservation_id(user_id, day, month):
         )
         result = session.scalars(stmt).one_or_none().id
         if result:
+            result = result.id
             session.close()
             return result
         else:

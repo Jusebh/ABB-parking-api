@@ -7,8 +7,9 @@ from database.operations.connecting import connect_to_database
 def select_email_by_reservation_id(reservation_id):
     with Session(connect_to_database()) as session:
         stmt = select(Users).join(Users.reservations).join(Reservations.reservations_dates).where(ReservationsDates.id == int(reservation_id))
-        result = session.scalars(stmt).one_or_none().email
+        result = session.scalars(stmt).one_or_none()
         if result:
+            result = result.email
             session.close()
             return result
         else:

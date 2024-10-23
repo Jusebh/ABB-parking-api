@@ -1,6 +1,6 @@
 from flask import Flask
-from flask_session import Session
 from flask_apscheduler import APScheduler
+from flask_session import Session
 from blueprints.admin.get import get_all_priority_groups, get_all_reservations_dates, get_all_statuses, get_all_users
 from blueprints.admin.post import receive_new_user_data, receive_new_reservation_data, receive_remove_data, receive_update_data, receive_email_data
 from blueprints.user.oauth import get_login_link, get_logout_link, logout_success_msg, auth_response, find_user, get_user_data
@@ -35,7 +35,7 @@ app.register_blueprint(receive_remove_data)
 app.register_blueprint(receive_update_data)
 app.register_blueprint(receive_email_data)
 
-app.register_blueprint(get_login_link)
+app.register_blueprint(get_login_link, url_pefix="/login")
 app.register_blueprint(get_logout_link)
 app.register_blueprint(logout_success_msg)
 app.register_blueprint(auth_response)
