@@ -27,7 +27,7 @@ class OAuth(OAuthConsumerMixin, Base):
     provider_user_id: Mapped[str]
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
-    users: Mapped["Users"] = relationship(back_populates = "oauth")
+    users: Mapped["Users"] = relationship(back_populates = "oauth") 
 
 class PriorityGroups(Base):
     __tablename__ = "priority_groups"
