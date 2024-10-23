@@ -1,8 +1,6 @@
 azure-communication-email
 flask
 flask_apscheduler
-flask_dance
-flask_login
 flask_session
 identity
 psycopg2

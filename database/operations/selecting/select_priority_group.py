@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from database.operations.connecting import connect_to_database
 from database.models import Users
 
+
 def select_priority_group(user_id):
     with Session(connect_to_database()) as session:
         stmt = select(Users).where(Users.id == int(user_id))

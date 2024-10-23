@@ -3,16 +3,17 @@ from sqlalchemy.orm import Session
 from database.operations.connecting import connect_to_database
 from database.models import Users, PriorityGroups
 
-def add_user(email, priority_group, notifications = True, role = "user"):
+
+def add_user(email, priority_group, notifications=True, role="user"):
     with Session(connect_to_database()) as session:
         try:
             stmt = select(PriorityGroups).where(PriorityGroups.title == priority_group)
             priority = session.scalars(stmt).one_or_none().id
             user = Users(
-                email = email,
-                priority_group_id = priority,
-                notifications = notifications,
-                role = role,
+                email=email,
+                priority_group_id=priority,
+                notifications=notifications,
+                role=role,
             )
             session.add(user)
             session.commit()

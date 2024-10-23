@@ -4,13 +4,24 @@ from datetime import datetime
 from database.operations.adding.add_reservation import add_reservation
 from communication.new_reservation_mail import new_reservation_mail
 from database.select_confing_data import select_config_data
-from database.operations.selecting.select_count_of_reservations import select_count_of_reservations
+from database.operations.selecting.select_count_of_reservations import (
+    select_count_of_reservations,
+)
 from database.operations.selecting.select_priority_group import select_priority_group
-from database.operations.selecting.select_reservations_by_priority import select_reservation_by_priority
+from database.operations.selecting.select_reservations_by_priority import (
+    select_reservation_by_priority,
+)
 from database.operations.selecting.select_user_email import select_user_email
-from database.operations.selecting.select_user_notification_status import select_user_notification_status
-from database.operations.selecting.select_user_reservations_by_month import select_user_reservations_by_month
-from database.operations.updating.update_reservation_status import update_reservation_status
+from database.operations.selecting.select_user_notification_status import (
+    select_user_notification_status,
+)
+from database.operations.selecting.select_user_reservations_by_month import (
+    select_user_reservations_by_month,
+)
+from database.operations.updating.update_reservation_status import (
+    update_reservation_status,
+)
+
 
 def check_reservation_possibility(day: str, month: str, user_id, dates: list):
     dates = list(set(dates))
@@ -18,8 +29,8 @@ def check_reservation_possibility(day: str, month: str, user_id, dates: list):
     email = select_user_email(int(user_id))["email"]
     number_of_parking_spots = int(select_config_data("parking_spots_number"))
     result = []
-    current_year = datetime.now().year  
-    last_day = calendar.monthrange(current_year, int(month))[1]  
+    current_year = datetime.now().year
+    last_day = calendar.monthrange(current_year, int(month))[1]
     date = f"{day}-{month}-{str(datetime.now().year)}"
     datetime.strptime(date, "%d-%m-%Y").date()
     number_of_reservations = int(select_count_of_reservations(day, month))
@@ -69,4 +80,4 @@ def check_reservation_possibility(day: str, month: str, user_id, dates: list):
             if notification_status:
                 thread = threading.Thread(target=new_reservation_mail, args=(email, dates))
                 thread.start()
-    return result            
+    return result

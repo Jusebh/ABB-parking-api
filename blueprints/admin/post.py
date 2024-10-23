@@ -16,10 +16,12 @@ from database.operations.updating.update_statuses import update_status
 from database.operations.updating.update_users import update_user
 
 receive_new_user_data = Blueprint("receive_new_user_data", __name__)
-@receive_new_user_data.route("/admin/post/receiveNewUserData", methods=['POST'])
+
+
+@receive_new_user_data.route("/admin/post/receiveNewUserData", methods=["POST"])
 def new_user_data():
-    content_type = request.headers.get('Content-Type')
-    if content_type == 'application/json':
+    content_type = request.headers.get("Content-Type")
+    if content_type == "application/json":
         data = request.get_json()
         success = add_user(data["email"], data["priority_group_id"])
         if success:
@@ -29,26 +31,32 @@ def new_user_data():
     else:
         return jsonify({"result": "Wrong content type"})
 
+
 receive_new_reservation_data = Blueprint("receive_new_reservation_data", __name__)
-@receive_new_reservation_data.route("/admin/post/receiveNewReservationData", methods=['POST'])
+
+
+@receive_new_reservation_data.route("/admin/post/receiveNewReservationData", methods=["POST"])
 def new_reservation_data():
-    content_type = request.headers.get('Content-Type')
+    content_type = request.headers.get("Content-Type")
     current_hour = datetime.now().hour
     current_day = datetime.now().day
     current_month = datetime.now().month
     result = []
-    if (content_type == 'application/json'):
+    if content_type == "application/json":
         data = request.get_json()
-        result = check_reservation_possibility(day = data["day"], month= data["month"], user_id = data["user_id"], dates = data["dates"])
+        result = check_reservation_possibility(day=data["day"], month=data["month"], user_id=data["user_id"], dates=data["dates"])
         return jsonify({"result": result})
     else:
         return jsonify({"result": "Wrong content type"})
 
+
 receive_remove_data = Blueprint("receive_remove_data", __name__)
-@receive_remove_data.route("/admin/post/receiveRemoveData", methods=['POST'])
+
+
+@receive_remove_data.route("/admin/post/receiveRemoveData", methods=["POST"])
 def remove_data():
-    content_type = request.headers.get('Content-Type')
-    if content_type == 'application/json':
+    content_type = request.headers.get("Content-Type")
+    if content_type == "application/json":
         data = request.get_json()
         try:
             if data["table"] == "users":
@@ -69,11 +77,14 @@ def remove_data():
     else:
         return jsonify({"result": "Wrong content type"})
 
+
 receive_update_data = Blueprint("receive_update_data", __name__)
-@receive_update_data.route("/admin/post/receiveUpdateData", methods=['POST'])
+
+
+@receive_update_data.route("/admin/post/receiveUpdateData", methods=["POST"])
 def update_data():
-    content_type = request.headers.get('Content-Type')
-    if content_type == 'application/json':
+    content_type = request.headers.get("Content-Type")
+    if content_type == "application/json":
         data = request.get_json()
         try:
             if data["table"] == "users":
@@ -81,7 +92,12 @@ def update_data():
             elif data["table"] == "reservations":
                 update_reservation(int(data["reservation_id"]), int(data["reservation_user_id"]))
             elif data["table"] == "reservations_dates":
-                update_reservations_date(int(data["reservation_date_id"]), int(data["reservation_date_reservation_id"]), int(data["reservation_date_status_id"]), data["reservation_date_date_of_reservation"])
+                update_reservations_date(
+                    int(data["reservation_date_id"]),
+                    int(data["reservation_date_reservation_id"]),
+                    int(data["reservation_date_status_id"]),
+                    data["reservation_date_date_of_reservation"],
+                )
             elif data["table"] == "priority_groups":
                 update_priority_group(int(data["group_id"]), data["title"], data["priority_number"])
             elif data["table"] == "statuses":
@@ -93,12 +109,15 @@ def update_data():
             return jsonify({"result": "Couldn't add user"})
     else:
         return jsonify({"result": "Wrong content type"})
-    
+
+
 receive_email_data = Blueprint("receive_email_data", __name__)
-@receive_email_data.route("/admin/post/receiveEmailData", methods=['POST'])
+
+
+@receive_email_data.route("/admin/post/receiveEmailData", methods=["POST"])
 def email_data():
     content_type = request.headers.get("Content-Type")
-    if content_type == 'application/json':
+    if content_type == "application/json":
         data = request.get_json()
         try:
             admin_mail(data["email_list"], data["content"], data["subject"])

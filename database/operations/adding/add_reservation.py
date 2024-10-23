@@ -6,6 +6,7 @@ from database.operations.connecting import connect_to_database
 from database.models import Reservations, Statuses, ReservationsDates
 from database.select_confing_data import select_config_data
 
+
 def add_reservation(user_id, day, month, dates: list, priority):
     result = []
     next_month_open_hour = int(select_config_data("next_month_opening_hour"))
@@ -22,16 +23,13 @@ def add_reservation(user_id, day, month, dates: list, priority):
             current_month = 1
         else:
             current_month += 1
-    
+
     with Session(connect_to_database()) as session:
-        reservation = Reservations(
-            user_id = int(user_id),
-            created_at = datetime.now()
-        )
+        reservation = Reservations(user_id=int(user_id), created_at=datetime.now())
         session.add(reservation)
         session.commit()
         reservation_id = reservation.id
-        
+
         for i in dates:
             if int(i) > last_day:
                 continue
@@ -49,13 +47,13 @@ def add_reservation(user_id, day, month, dates: list, priority):
                         stmt = select(Statuses).where(Statuses.title == "Pending")
                     status = session.scalars(stmt).one()
                     reservation_date = ReservationsDates(
-                        reservation_id = reservation_id,
-                        date_of_reservation = date,
-                        status_id = status.id
+                        reservation_id=reservation_id,
+                        date_of_reservation=date,
+                        status_id=status.id,
                     )
                     session.add(reservation_date)
                     session.commit()
-                    result.append(f"Rezerwacja na dzień {i} powiodła się, i jej aktualny status to \"{status.title}\".")
+                    result.append(f'Rezerwacja na dzień {i} powiodła się, i jej aktualny status to "{status.title}".')
             elif int(i) > current_day and current_month == int(month):
                 date = f"{i}-{month}-{current_year}"
                 date = datetime.strptime(date, "%d-%m-%Y").date()
@@ -65,13 +63,13 @@ def add_reservation(user_id, day, month, dates: list, priority):
                     stmt = select(Statuses).where(Statuses.title == "Pending")
                 status = session.scalars(stmt).one()
                 reservation_date = ReservationsDates(
-                    reservation_id = reservation_id,
-                    date_of_reservation = date,
-                    status_id = status.id
+                    reservation_id=reservation_id,
+                    date_of_reservation=date,
+                    status_id=status.id,
                 )
                 session.add(reservation_date)
                 session.commit()
-                result.append(f"Rezerwacja na dzień {i} powiodła się, i jej aktualny status to \"{status.title}\".")
+                result.append(f'Rezerwacja na dzień {i} powiodła się, i jej aktualny status to "{status.title}".')
             else:
                 result.append(f"Przy rezerwacji na dzień {i},  coś poszło nie tak.")
     return result

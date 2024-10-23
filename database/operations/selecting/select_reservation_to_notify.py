@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from database.operations.connecting import connect_to_database
 from database.models import ReservationsDates, Reservations
 
+
 def select_reservation_to_notify():
     with Session(connect_to_database()) as session:
         stmt = select(ReservationsDates).join(ReservationsDates.reservations).join(Reservations.users).join(ReservationsDates.statuses)
@@ -14,6 +15,11 @@ def select_reservation_to_notify():
             if i.reservations.users.notifications:
                 if i.statuses.title == "Potwierdzony":
                     if (i.date_of_reservation - today).days <= 1:
-                        email_tab.append({"email": i.reservations.users.email, "date": i.date_of_reservation})
+                        email_tab.append(
+                            {
+                                "email": i.reservations.users.email,
+                                "date": i.date_of_reservation,
+                            }
+                        )
         session.close()
         return email_tab

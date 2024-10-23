@@ -1,14 +1,13 @@
 from datetime import datetime, date
 from typing import List
-from flask_dance.consumer.storage.sqla import OAuthConsumerMixin
-from flask_login import UserMixin
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 class Base(DeclarativeBase):
     pass
 
-class Users(UserMixin, Base):
+
+class Users(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key = True)
@@ -17,17 +16,8 @@ class Users(UserMixin, Base):
     notifications: Mapped[bool]
     role: Mapped[str] = mapped_column(String(30), default="user")
 
-    oauth: Mapped["OAuth"] = relationship(back_populates = "users")
     priority_groups: Mapped["PriorityGroups"] = relationship(back_populates = "users")
     reservations: Mapped[List["Reservations"]] = relationship(back_populates = "users", cascade = "all, delete-orphan")
-
-class OAuth(OAuthConsumerMixin, Base):
-    __tablename__ = "oauth"
-
-    provider_user_id: Mapped[str]
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-
-    users: Mapped["Users"] = relationship(back_populates = "oauth")
 
 class PriorityGroups(Base):
     __tablename__ = "priority_groups"
