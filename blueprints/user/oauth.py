@@ -1,5 +1,5 @@
 import app_config
-from flask import Blueprint, flash, render_template, url_for
+from flask import Blueprint, flash, render_template
 from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.consumer.storage.sqla import SQLAlchemyStorage
 from flask_dance.contrib.azure import make_azure_blueprint

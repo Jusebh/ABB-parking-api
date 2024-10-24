@@ -15,9 +15,9 @@
 {% endwith %}
 {% if current_user.is_authenticated %}
   You are logged in as {{ current_user.email }}!
-  <a href="{{ url_for("logout.logout_function") }}">Log out</a>
+  <a href="{{ url_for("logout.logout_function", _external = True) }}">Log out</a>
 {% else %}
   You are not logged in.
-  <a href="{{ url_for("azure.login") }}">Log in</a>
+  <a href="{{ url_for("azure.login", _external = True) }}">Log in</a>
 {% endif %}
 </body>
