@@ -9,7 +9,7 @@ CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 REDIRECT_PATH = "/user/oauth/login"
 ENDPOINT = "https://graph.microsoft.com/v1.0/me"
 
-SCOPE = ["User.Read openid profile email"]
+SCOPE = ["User.Read"]
 
 SESSION_TYPE = "filesystem"
 
