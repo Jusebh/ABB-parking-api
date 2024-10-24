@@ -27,16 +27,12 @@ def azure_logged_in(blueprint, token):
     if not resp.ok:
         return False
     info = resp.json()
+    print(info)
     user_id = info["id"]
-    oauth = select_oauth(provider=blueprint.name, provider_user_id=user_id)
-    if not oauth:
-        oauth = add_oauth(blueprint.name, user_id, token)
-    if oauth.users:
-        login_user(oauth.users)
-    else:
-        user = add_user(info["mail"], "Basic")
-        oauth.users = user
-        login_user(user)
+    user = select_oauth(provider=blueprint.name, provider_user_id=user_id)
+    if not user:
+        user = add_oauth(blueprint.name, user_id, token, info["mail"])
+    login_user(user)
     return False
 
 @oauth_error.connect_via(blueprint)
@@ -51,4 +47,4 @@ logout = Blueprint("logout", __name__, template_folder="templates")
 @login_required
 def logout_function():
     logout_user()
-    return render_template("logout_success")
+    return render_template("logout_success.html")
