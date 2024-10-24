@@ -17,6 +17,7 @@ blueprint = make_azure_blueprint(
     scope = app_config.SCOPE,
     storage = SQLAlchemyStorage(OAuth, Session(connect_to_database()), user=current_user),
     tenant = app_config.TENANT_ID,
+    redirect_url = url_for("azure/authorized", _scheme = "https")
 )
 
 @oauth_authorized.connect_via(blueprint)
