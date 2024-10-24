@@ -14,3 +14,5 @@ SCOPE = ["User.Read"]
 SESSION_TYPE = "filesystem"
 
 SCHEDULER_API_ENABLED = True
+
+PREFERRED_URL_SCHEME = 'https'
