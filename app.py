@@ -10,14 +10,12 @@ from communication.check_reservations import check_reservations
 from database.operations.create_tables import create_tables
 from database.operations.selecting.select_user_by_id import select_user_by_id
 import app_config
-from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
 app.config.from_object(app_config)
 Session(app)
 
 create_tables()
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_for=1)
 
 app.register_blueprint(get_all_users)
 app.register_blueprint(get_all_priority_groups)
