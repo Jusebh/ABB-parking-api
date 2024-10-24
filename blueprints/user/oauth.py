@@ -17,14 +17,13 @@ blueprint = make_azure_blueprint(
     scope = app_config.SCOPE,
     storage = SQLAlchemyStorage(OAuth, Session(connect_to_database()), user=current_user),
     tenant = app_config.TENANT_ID,
-    redirect_url = url_for("azure/authorized", _scheme = "https")
 )
 
 @oauth_authorized.connect_via(blueprint)
 def azure_logged_in(blueprint, token):
     if not token:
         return False
-    resp = blueprint.session.get(app_config.ENDPOINT)
+    resp = blueprint.session.get("/v1.0/me")
     if not resp.ok:
         return False
     info = resp.json()
