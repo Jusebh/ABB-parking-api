@@ -17,7 +17,7 @@ app.config.from_object(app_config)
 Session(app)
 
 create_tables()
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto="https")
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_for=1)
 
 app.register_blueprint(get_all_users)
 app.register_blueprint(get_all_priority_groups)
