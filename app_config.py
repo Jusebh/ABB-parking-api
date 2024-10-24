@@ -16,3 +16,5 @@ SESSION_TYPE = "filesystem"
 SCHEDULER_API_ENABLED = True
 
 PREFERRED_URL_SCHEME = 'https'
+
+SERVER_NAME = "abb-parking.azurewebsites.net"

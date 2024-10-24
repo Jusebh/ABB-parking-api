@@ -12,8 +12,10 @@ from database.operations.selecting.select_user_by_id import select_user_by_id
 import app_config
 
 app = Flask(__name__)
+
 app.config.from_object(app_config)
 Session(app)
+
 
 create_tables()
 
