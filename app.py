@@ -10,8 +10,10 @@ from communication.check_reservations import check_reservations
 from database.operations.create_tables import create_tables
 from database.operations.selecting.select_user_by_id import select_user_by_id
 import app_config
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
 app.config.from_object(app_config)
 Session(app)
 
